@@ -20,14 +20,15 @@ namespace QA.DemoSite.Services
             {
                 dbType = DatabaseType.SqlServer;
             }
+            DbType = dbType;
         }
 
-        readonly DatabaseType dbType = DatabaseType.SqlServer;
+        public DatabaseType DbType { get; }
         public IDbContext QpDataContext { get; }
 
         public IEnumerable<BlogPostDto> GetAllPosts()
         {
-            if (dbType == DatabaseType.Postgres)
+            if (DbType == DatabaseType.Postgres)
             {
                 return (QpDataContext as PostgreQpDataContext).BlogPosts
                   .Include(c => c.Category)
@@ -44,7 +45,7 @@ namespace QA.DemoSite.Services
 
         public BlogPostDto GetPost(int id)
         {
-            if (dbType == DatabaseType.Postgres)
+            if (DbType == DatabaseType.Postgres)
             {
                 return Map((QpDataContext as PostgreQpDataContext).BlogPosts
                  .Include(c => c.Category)

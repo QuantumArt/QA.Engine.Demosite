@@ -7,7 +7,6 @@ using QA.DotNetCore.Caching.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Configuration;
 using QA.DotNetCore.Engine.Persistent.Interfaces;
 using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 
@@ -27,9 +26,10 @@ namespace QA.DemoSite.Services
             {
                 dbType = DatabaseType.SqlServer;
             }
+            DbType = dbType;
         }
 
-        readonly DatabaseType dbType = DatabaseType.SqlServer;
+        public DatabaseType DbType { get; }
         public IDbContext QpDataContext { get; }
         public ICacheProvider CacheProvider { get; }
         public CacheTagUtilities CacheTagUtilities { get; }
@@ -49,7 +49,7 @@ namespace QA.DemoSite.Services
 
         private IEnumerable<FaqItemDto> GetAll()
         {
-            if (dbType == DatabaseType.Postgres)
+            if (DbType == DatabaseType.Postgres)
             {
                 return (QpDataContext as PostgreQpDataContext).FaqItems.ToList().Select(Map).ToArray();
             }
