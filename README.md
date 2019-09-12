@@ -1,20 +1,11 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Это демосайт для презентации возможностей виджетной платформы на базе .net core.
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
-
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
-
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Проект с сайтом - QA.DemoSite
+Он может работать с QP как MSSQL, так и Postgre, в зависимости от настройки в appsettings.json.
+С этим связана особенность, что в проекте есть одновременно 2 проекта DAL: один для базы MSSQL, другой - Postgre.
+Для автогенерации кода кештегов QP используется CacheTags.tt, в нём прописана строка подключения к MSSQL базе.
+Основные dependency проекта, помимо пакетов Microsoft
+- QP8.EntityFrameworkCore (генерация контекстов EF.Core по маппингам QP)
+- QA.DotNetCore.Engine.* (виджетная платформа)
