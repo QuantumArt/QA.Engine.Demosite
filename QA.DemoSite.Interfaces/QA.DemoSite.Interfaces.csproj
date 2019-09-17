@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="QA.DotNetCore.Engine.Abstractions" Version="0.9.0" />
+    <PackageReference Include="QA.DotNetCore.Engine.Abstractions" Version="1.0.0-beta" />
   </ItemGroup>
 
 </Project>

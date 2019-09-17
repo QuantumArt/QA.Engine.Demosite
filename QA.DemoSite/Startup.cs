@@ -54,8 +54,7 @@ namespace QA.DemoSite
             //структура сайта виджетной платформы
             services.AddSiteStructureEngine(options =>
             {
-                options.QpSettings = qpSettings;
-                options.QpSiteStructureSettings = Configuration.GetSection("QpSiteStructureSettings").Get<QpSiteStructureSettings>();
+                options.UseQpSettings(qpSettings);
                 options.TypeFinder.RegisterFromAssemblyContaining<RootPage, IAbstractItem>();
             });
 
@@ -88,10 +87,7 @@ namespace QA.DemoSite
             //подключение self-hosted аб-тестов
             services.AddAbTestServices(options =>
             {
-                //дублируются некоторые опции из AddSiteStructureEngine, потому что АБ-тесты могут быть или не быть независимо от структуры сайта
-                options.QpSettings = qpSettings;
-                options.AbTestingSettings.SiteId = qpSettings.SiteId;
-                options.AbTestingSettings.IsStage = qpSettings.IsStage;
+                options.UseQpSettings(qpSettings);
             });
 
             //работа с кеш-тэгами
@@ -111,10 +107,9 @@ namespace QA.DemoSite
             //возможность работы с режимом onscreen
             services.AddOnScreenIntegration(mvc, options =>
             {
-                options.Settings.AdminSiteBaseUrl = Configuration.GetSection("OnScreen").Get<OnScreenSettings>().AdminSiteBaseUrl;
-                options.Settings.SiteId = qpSettings.SiteId;
-                options.Settings.IsStage = qpSettings.IsStage;
-                options.Settings.AvailableFeatures = OnScreenFeatures.Widgets | OnScreenFeatures.AbTests;
+                options.AdminSiteBaseUrl = Configuration.GetSection("OnScreen").Get<OnScreenSettings>().AdminSiteBaseUrl;
+                options.AvailableFeatures = OnScreenFeatures.Widgets | OnScreenFeatures.AbTests;
+                options.UseQpSettings(qpSettings);
             });
         }
 
