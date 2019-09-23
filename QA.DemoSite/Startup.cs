@@ -21,7 +21,6 @@ using QA.DotNetCore.Engine.OnScreen.Configuration;
 using QA.DotNetCore.Engine.Persistent.Interfaces;
 using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 using QA.DotNetCore.Engine.QpData.Configuration;
-using QA.DotNetCore.Engine.QpData.Settings;
 using QA.DotNetCore.Engine.Routing.Configuration;
 using QA.DotNetCore.Engine.Targeting.Configuration;
 using System;
@@ -50,6 +49,8 @@ namespace QA.DemoSite
                 dbType = DatabaseType.SqlServer;
             }
             qpSettings.ConnectionString = dbType == DatabaseType.SqlServer ? Configuration.GetConnectionString("DatabaseQP") : Configuration.GetConnectionString("DatabaseQPPostgre");
+
+            services.AddSingleton(qpSettings);
 
             //структура сайта виджетной платформы
             services.AddSiteStructureEngine(options =>
