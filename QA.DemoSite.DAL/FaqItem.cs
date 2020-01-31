@@ -35,4 +35,4 @@ namespace QA.DemoSite.Mssql.DAL
 		}
         public virtual Int32? SortOrder { get; set; }
 	}
-}
+} 

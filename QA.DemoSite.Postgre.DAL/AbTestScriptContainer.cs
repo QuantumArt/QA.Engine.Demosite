@@ -35,5 +35,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<AbTestScript> ScriptsInContainer { get; set; }
 	}
-}
-	
+} 	

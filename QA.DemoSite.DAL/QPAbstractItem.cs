@@ -125,5 +125,4 @@ namespace QA.DemoSite.Mssql.DAL
 		/// </summary>
 		public  ICollection<QPAbstractItem> Versions { get; set; }
 	}
-}
-	
+} 	

@@ -125,5 +125,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<QPAbstractItem> Versions { get; set; }
 	}
-}
-	
+} 	

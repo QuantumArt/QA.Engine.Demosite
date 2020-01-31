@@ -35,5 +35,4 @@ namespace QA.DemoSite.Mssql.DAL
 		/// </summary>
 		public  ICollection<AbTestScript> ScriptsInContainer { get; set; }
 	}
-}
-	
+} 	

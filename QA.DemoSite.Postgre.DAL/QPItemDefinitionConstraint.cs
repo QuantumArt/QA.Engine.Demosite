@@ -38,5 +38,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public virtual Int32? Source_ID { get; set; }
 	}
-}
-	
+} 	

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;	
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using QA.DemoSite.Interfaces;
+using System.Threading;
 
 /* place your custom usings here */
 
@@ -28,15 +28,14 @@ namespace QA.DemoSite.Mssql.DAL
             _accessor = accessor;
         }
 
-        [ThreadStatic]
-        private static QpDataContext _context;
+        private static AsyncLocal<QpDataContext> _context = new AsyncLocal<QpDataContext>();
 
         public static QpDataContext Current
         {
             get
             {
                 if (_accessor?.HttpContext == null)
-                    return _context;
+                    return _context.Value;
                 else
                     return (QpDataContext)_accessor.HttpContext.Items[Key];
             }
@@ -44,7 +43,7 @@ namespace QA.DemoSite.Mssql.DAL
             private set
             {
                  if (_accessor?.HttpContext == null)
-                    _context = value;
+                    _context.Value = value;
                 else
                     _accessor.HttpContext.Items[Key] = value;
             }
@@ -116,7 +115,7 @@ namespace QA.DemoSite.Mssql.DAL
 						.Build();
 			var connectionString = configuration.GetConnectionString("qp_database");
             var optionsBuilder = new DbContextOptionsBuilder<QpDataContext>();
-            optionsBuilder.UseSqlServer<QpDataContext>(connectionString);
+            optionsBuilder.UseNpgsql<QpDataContext>(connectionString);
             return optionsBuilder.Options;
         }
 		
@@ -124,7 +123,7 @@ namespace QA.DemoSite.Mssql.DAL
         {
 		    var connectionString = configuration.GetConnectionString("qp_database");
             var optionsBuilder = new DbContextOptionsBuilder<QpDataContext>();
-            optionsBuilder.UseSqlServer<QpDataContext>(connectionString);
+            optionsBuilder.UseNpgsql<QpDataContext>(connectionString);
             return optionsBuilder.Options;
         }
 		

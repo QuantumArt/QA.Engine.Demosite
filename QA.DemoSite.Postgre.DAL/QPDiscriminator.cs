@@ -87,5 +87,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<QPDiscriminator2QPDiscriminatorForBackwardForAllowedItemDefinitions1> BackwardForAllowedItemDefinitions1 { get; set; }
 	}
-}
-	
+} 	

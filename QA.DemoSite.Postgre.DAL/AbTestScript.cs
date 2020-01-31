@@ -43,5 +43,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public virtual Int32? Container_ID { get; set; }
 	}
-}
-	
+} 	

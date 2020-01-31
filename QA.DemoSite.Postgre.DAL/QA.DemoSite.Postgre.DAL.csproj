@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="QP8.EntityFrameworkCore" Version="1.1.4-beta22" />
+    <PackageReference Include="QP8.EntityFrameworkCore" Version="1.1.8" />
+    <PackageReference Include="Quantumart.AspNetCore" Version="4.0.2" />
   </ItemGroup>
 
   <ItemGroup>

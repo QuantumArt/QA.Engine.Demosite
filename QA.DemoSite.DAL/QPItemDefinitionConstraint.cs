@@ -38,5 +38,4 @@ namespace QA.DemoSite.Mssql.DAL
 		/// </summary>
 		public virtual Int32? Source_ID { get; set; }
 	}
-}
-	
+} 	

@@ -49,8 +49,17 @@ namespace QA.DemoSite.Postgre.DAL
                                  c.MappedName == contentMappedName &&
                                  a.MappedName == fieldMappedName
                              select a;
-
-            return attributes.Single();
+            if (attributes.Count() == 1)
+            {
+                return attributes.Single();
+            }
+            var attributesWithRefToVirtual = from c in _schema.Contents
+                                             from a in c.Attributes
+                                             where
+                                                 c.MappedName == contentMappedName &&
+                                                 a.Name == fieldMappedName
+                                             select a;
+            return attributesWithRefToVirtual.Single();
         }
     }
 }

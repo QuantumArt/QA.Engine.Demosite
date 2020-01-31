@@ -61,5 +61,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<BlogPost2BlogTagForTags> Tags { get; set; }
 	}
-}
-	
+} 	

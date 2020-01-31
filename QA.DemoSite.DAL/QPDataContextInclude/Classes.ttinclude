@@ -102,6 +102,4 @@ namespace <#=System.Runtime.Remoting.Messaging.CallContext.LogicalGetData("Names
 <#+		} #>
 <#+		} #>
 	}
-}
-<#+}#>
-<#+}#>
+} <#+} }#>

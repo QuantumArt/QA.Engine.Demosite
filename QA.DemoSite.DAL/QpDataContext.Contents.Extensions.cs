@@ -52,7 +52,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("QPAbstractItem", x.Key), y => y.Value(this, context)));
             }
             else
@@ -108,7 +107,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("QPDiscriminator", x.Key), y => y.Value(this, context)));
             }
             else
@@ -154,7 +152,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("QPCulture", x.Key), y => y.Value(this, context)));
             }
             else
@@ -189,7 +186,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("QPItemDefinitionConstraint", x.Key), y => y.Value(this, context)));
             }
             else
@@ -231,7 +227,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("AbTest", x.Key), y => y.Value(this, context)));
             }
             else
@@ -275,7 +270,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("AbTestBaseContainer", x.Key), y => y.Value(this, context)));
             }
             else
@@ -315,7 +309,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("AbTestScript", x.Key), y => y.Value(this, context)));
             }
             else
@@ -349,7 +342,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("AbTestScriptContainer", x.Key), y => y.Value(this, context)));
             }
             else
@@ -383,7 +375,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("AbTestClientRedirectContainer", x.Key), y => y.Value(this, context)));
             }
             else
@@ -419,7 +410,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("AbTestClientRedirect", x.Key), y => y.Value(this, context)));
             }
             else
@@ -469,7 +459,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("BlogPost", x.Key), y => y.Value(this, context)));
             }
             else
@@ -507,7 +496,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("BlogCategory", x.Key), y => y.Value(this, context)));
             }
             else
@@ -541,7 +529,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("BlogTag", x.Key), y => y.Value(this, context)));
             }
             else
@@ -580,7 +567,6 @@ namespace QA.DemoSite.Mssql.DAL
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("FaqItem", x.Key), y => y.Value(this, context)));
             }
             else

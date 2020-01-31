@@ -35,4 +35,4 @@ namespace QA.DemoSite.Postgre.DAL
 		}
         public virtual Int32? SortOrder { get; set; }
 	}
-}
+} 

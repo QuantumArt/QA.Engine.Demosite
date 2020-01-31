@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;	
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using QA.DemoSite.Interfaces;
+using System.Threading;
 
 
 
@@ -28,15 +28,14 @@ namespace QA.DemoSite.Postgre.DAL
             _accessor = accessor;
         }
 
-        [ThreadStatic]
-        private static PostgreQpDataContext _context;
+        private static AsyncLocal<PostgreQpDataContext> _context = new AsyncLocal<PostgreQpDataContext>();
 
         public static PostgreQpDataContext Current
         {
             get
             {
                 if (_accessor?.HttpContext == null)
-                    return _context;
+                    return _context.Value;
                 else
                     return (PostgreQpDataContext)_accessor.HttpContext.Items[Key];
             }
@@ -44,7 +43,7 @@ namespace QA.DemoSite.Postgre.DAL
             private set
             {
                  if (_accessor?.HttpContext == null)
-                    _context = value;
+                    _context.Value = value;
                 else
                     _accessor.HttpContext.Items[Key] = value;
             }

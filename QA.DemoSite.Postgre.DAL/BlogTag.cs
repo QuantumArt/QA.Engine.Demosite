@@ -33,5 +33,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<BlogPost2BlogTagForTags> BackwardForTags { get; set; }
 	}
-}
-	
+} 	

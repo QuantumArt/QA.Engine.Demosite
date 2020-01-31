@@ -77,5 +77,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<AbTestClientRedirectContainer> ClientRedirectContainers { get; set; }
 	}
-}
-	
+} 	

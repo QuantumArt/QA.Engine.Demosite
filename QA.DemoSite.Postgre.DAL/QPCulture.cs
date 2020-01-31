@@ -40,5 +40,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<QPAbstractItem> AbstractItems { get; set; }
 	}
-}
-	
+} 	

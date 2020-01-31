@@ -56,7 +56,6 @@ namespace <#=System.Runtime.Remoting.Messaging.CallContext.LogicalGetData("Names
 
             if (propertyNames == null || propertyNames.Length == 0)
             {
-                // todo: filter null values
                 table = new Hashtable(_valueExtractors.ToDictionary(x => context.GetFormNameByNetNames("<#=content.MappedName#>", x.Key), y => y.Value(this, context)));
             }
             else

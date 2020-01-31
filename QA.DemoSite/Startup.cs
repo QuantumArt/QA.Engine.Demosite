@@ -62,15 +62,17 @@ namespace QA.DemoSite
             //ef контекст
             if (dbType == DatabaseType.Postgres)
             {
+                services.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(qpSettings.ConnectionString));
                 services.AddScoped<IDbContext>(sp => PostgreQpDataContext.CreateWithStaticMapping(
                     qpSettings.IsStage ? Postgre.DAL.ContentAccess.Stage : Postgre.DAL.ContentAccess.Live,
-                    new NpgsqlConnection(qpSettings.ConnectionString)));
+                    sp.GetService<NpgsqlConnection>()));
             }
             else
             {
+                services.AddScoped<SqlConnection>(_ => new SqlConnection(qpSettings.ConnectionString));
                 services.AddScoped<IDbContext>(sp => QpDataContext.CreateWithStaticMapping(
                     qpSettings.IsStage ? Mssql.DAL.ContentAccess.Stage : Mssql.DAL.ContentAccess.Live,
-                    new SqlConnection(qpSettings.ConnectionString)));
+                    sp.GetService<SqlConnection>()));
             }
 
             //сервисы слоя данных

@@ -42,5 +42,4 @@ namespace QA.DemoSite.Mssql.DAL
 		/// </summary>
 		public virtual Int32? Container_ID { get; set; }
 	}
-}
-	
+} 	

@@ -48,5 +48,4 @@ namespace QA.DemoSite.Mssql.DAL
 		/// </summary>
 		public  ICollection<AbTestBaseContainer> ABTestContainers { get; set; }
 	}
-}
-	
+} 	

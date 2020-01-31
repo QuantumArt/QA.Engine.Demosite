@@ -77,5 +77,4 @@ namespace QA.DemoSite.Mssql.DAL
 		/// </summary>
 		public  ICollection<AbTestClientRedirectContainer> ClientRedirectContainers { get; set; }
 	}
-}
-	
+} 	

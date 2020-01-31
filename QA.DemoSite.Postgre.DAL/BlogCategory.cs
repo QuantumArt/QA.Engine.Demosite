@@ -34,5 +34,4 @@ namespace QA.DemoSite.Postgre.DAL
 		/// </summary>
 		public  ICollection<BlogPost> PostsInCategory { get; set; }
 	}
-}
-	
+} 	
