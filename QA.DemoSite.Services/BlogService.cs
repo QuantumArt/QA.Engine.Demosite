@@ -78,7 +78,8 @@ namespace QA.DemoSite.Services
                 PostDate = blogPost.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01)),
                 Text = blogPost.Text,
                 YoutubeVideoCode = blogPost.YoutubeVideoCode,
-                Tags = blogPost.Tags.Select(Map).ToList()
+                Tags = blogPost.Tags.Select(Map).ToList(),
+                Published = blogPost.StatusTypeId == 143
             };
         }
 
@@ -97,7 +98,8 @@ namespace QA.DemoSite.Services
                 PostDate = blogPost.PostDate.GetValueOrDefault(new DateTime(2001, 01, 01)),
                 Text = blogPost.Text,
                 YoutubeVideoCode = blogPost.YoutubeVideoCode,
-                Tags = blogPost.Tags.Select(Map).ToList()
+                Tags = blogPost.Tags.Select(Map).ToList(),
+                Published = blogPost.StatusTypeId == 143
             };
         }
 

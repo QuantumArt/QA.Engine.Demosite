@@ -21,7 +21,7 @@ namespace QA.DemoSite.ViewModels.Builders
             {
                 vm.Items.AddRange(FaqService.GetItems(widget.Questions)
                     .OrderBy(i => i.SortOrder.GetValueOrDefault(Int32.MaxValue))
-                    .Select(i => new FaqWidgetItemViewModel { Id = i.Id, Answer = i.Answer, Question = i.Question }));
+                    .Select(i => new FaqWidgetItemViewModel { Id = i.Id, Answer = i.Answer, Question = i.Question, Published = i.Published }));
             }
             return vm;
         }

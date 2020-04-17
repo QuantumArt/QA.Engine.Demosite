@@ -63,7 +63,8 @@ namespace QA.DemoSite.Services
                 Id = faqItem.Id,
                 Answer = faqItem.Answer,
                 Question = faqItem.Question,
-                SortOrder = faqItem.SortOrder
+                SortOrder = faqItem.SortOrder,
+                Published = faqItem.StatusTypeId == 143
             };
         }
         private FaqItemDto Map(Postgre.DAL.FaqItem faqItem)
@@ -73,7 +74,8 @@ namespace QA.DemoSite.Services
                 Id = faqItem.Id,
                 Answer = faqItem.Answer,
                 Question = faqItem.Question,
-                SortOrder = faqItem.SortOrder
+                SortOrder = faqItem.SortOrder,
+                Published = faqItem.StatusTypeId == 143
             };
         }
     }

@@ -15,19 +15,21 @@
       <div class="panel-group accordion" id="@accordionId" role="tablist">
         @foreach (var item in Model.Items)
         {
-          <div class="panel panel-default">
-            <div class="panel-heading" role="tab">
-              <a href="#sharedTabQ@(item.Id)" role="button" class="collapsed" data-toggle="collapse" data-parent="#@accordionId">
-                <h4 class="panel-title">@item.Question<i class="fa fa-minus"></i></h4>
-              </a>
-            </div>
+          <onscreen-article id="@item.Id" content-id="30749" title="@item.Question" published="@item.Published">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab">
+                <a href="#sharedTabQ@(item.Id)" role="button" class="collapsed" data-toggle="collapse" data-parent="#@accordionId">
+                  <h4 class="panel-title">@item.Question<i class="fa fa-minus"></i></h4>
+                </a>
+              </div>
 
-            <div id="sharedTabQ@(item.Id)" class="panel-collapse collapse" role="tabpanel">
-              <div class="panel-body">
-                @Html.Raw(item.Answer)
+              <div id="sharedTabQ@(item.Id)" class="panel-collapse collapse" role="tabpanel">
+                <div class="panel-body">
+                  @Html.Raw(item.Answer)
+                </div>
               </div>
             </div>
-          </div>
+          </onscreen-article>
         }
       </div>
     </div>

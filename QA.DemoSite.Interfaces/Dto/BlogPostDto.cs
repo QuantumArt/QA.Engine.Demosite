@@ -19,5 +19,6 @@ namespace QA.DemoSite.Interfaces.Dto
         public IEnumerable<BlogTagDto> Tags { get; set; }
         public string Image { get; set; }
         public string YoutubeVideoCode { get; set; }
+        public bool Published { get; set; }
     }
 }

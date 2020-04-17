@@ -20,32 +20,34 @@
       <div class="col-md-8 blog-page-content">
         @foreach (var item in Model.Items)
         {
-          <div class="blog-item">
-            @if (!String.IsNullOrWhiteSpace(item.YoutubeVideoCode))
-            {
-              <div class="blog-page-post-video embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/@(item.YoutubeVideoCode)?showinfo=0&controls=0&rel=0&wmode=transparent"></iframe>
-              </div>
-            }
-            else if (!String.IsNullOrWhiteSpace(item.Image))
-            {
-              <div class="blog-item-img">
-                <a href="@item.Url">
-                  <img src="@item.Image" alt="" class="img-responsive">
-                </a>
-              </div>
-            }
-            <div class="blog-item-content">
-                <h2><a href="@item.Url">@item.Title</a></h2>
-                <div class="metadata">
-                    <i class="fa fa-calendar"></i> @item.Date
-                    <span class="separator">|</span>
-                    <i class="fa fa-user"></i> @item.CategoryName
+          <onscreen-article id="@item.Id" content-id="30745" title="@item.Title" published="@item.Published">
+            <div class="blog-item">
+              @if (!String.IsNullOrWhiteSpace(item.YoutubeVideoCode))
+              {
+                <div class="blog-page-post-video embed-responsive embed-responsive-16by9">
+                  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/@(item.YoutubeVideoCode)?showinfo=0&controls=0&rel=0&wmode=transparent"></iframe>
                 </div>
-                <p>@Html.Raw(item.Brief)</p>
-                <a href="@item.Url" class="btn btn-custom">Читать дальше</a>
+              }
+              else if (!String.IsNullOrWhiteSpace(item.Image))
+              {
+                <div class="blog-item-img">
+                  <a href="@item.Url">
+                    <img src="@item.Image" alt="" class="img-responsive">
+                  </a>
+                </div>
+              }
+              <div class="blog-item-content">
+                  <h2><a href="@item.Url">@item.Title</a></h2>
+                  <div class="metadata">
+                      <i class="fa fa-calendar"></i> @item.Date
+                      <span class="separator">|</span>
+                      <i class="fa fa-user"></i> @item.CategoryName
+                  </div>
+                  <p>@Html.Raw(item.Brief)</p>
+                  <a href="@item.Url" class="btn btn-custom">Читать дальше</a>
+              </div>
             </div>
-          </div>
+          </onscreen-article>
         }
       </div>
 

@@ -19,6 +19,7 @@ namespace QA.DemoSite.ViewModels
 
     public class BlogItemInListViewModel
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Brief { get; set; }
         public string CategoryName { get; set; }
@@ -28,5 +29,7 @@ namespace QA.DemoSite.ViewModels
         public string YoutubeVideoCode { get; set; }
 
         public string Url { get; set; }
+
+        public bool Published { get; set; }
     }
 }

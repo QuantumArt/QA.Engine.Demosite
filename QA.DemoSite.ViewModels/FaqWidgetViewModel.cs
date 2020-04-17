@@ -18,5 +18,6 @@ namespace QA.DemoSite.ViewModels
         public int Id { get; set; }
         public string Question { get; set; }
         public string Answer { get; set; }
+        public bool Published { get; set; }
     }
 }

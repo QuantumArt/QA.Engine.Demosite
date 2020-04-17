@@ -18,13 +18,15 @@ namespace QA.DemoSite.ViewModels.Builders
             var vm = new BlogPageViewModel { Header = blogPage.Title };
             vm.Items.AddRange(BlogService.GetAllPosts().Select(p => new BlogItemInListViewModel
             {
+                Id = p.Id,
                 Title = p.Title,
                 Brief = p.Brief,
                 Date = p.PostDate.ToString("dd.MM.yyyy"),
                 CategoryName = p.Category?.Title,
                 Image = p.Image,
                 YoutubeVideoCode = p.YoutubeVideoCode,
-                Url = blogPage.GetUrl() + "/details/" + p.Id
+                Url = blogPage.GetUrl() + "/details/" + p.Id,
+                Published = p.Published
             }));
             return vm;
         }

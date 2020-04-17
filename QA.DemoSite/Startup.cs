@@ -39,7 +39,10 @@ namespace QA.DemoSite
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvc = services.AddMvc();// .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var mvc = services.AddMvc(o => {
+                o.EnableEndpointRouting = false;
+            }).AddRazorRuntimeCompilation();
+
             services.AddLogging();
             services.AddSingleton<ILogger>(provider => provider.GetRequiredService<ILogger<Program>>());
 
@@ -116,7 +119,7 @@ namespace QA.DemoSite
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger logger)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
