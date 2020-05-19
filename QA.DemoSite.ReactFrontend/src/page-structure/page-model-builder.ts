@@ -1,6 +1,6 @@
 import { UniversalAbstractItem } from './universal-abstract-item';
 import { findPath, PathData, TargetingFilter } from './pathfinder';
-import { chain, cloneDeep } from 'lodash';
+import { chain, cloneDeep, some } from 'lodash';
 import { abstractItemTreeRemoveParents, abstractItemTreeSetParents } from './abstract-item-tree-parent-utils';
 
 const getZoneName = (item: UniversalAbstractItem): string =>
@@ -25,7 +25,6 @@ export interface PageModelBuilderInterface<T extends UniversalAbstractItem> {
 
 export class DefaultPageModelBuilder implements PageModelBuilderInterface<UniversalAbstractItem> {
   private widgetFilter?: TargetingFilter;
-
 
   constructor(widgetFilter?: TargetingFilter) {
     this.widgetFilter = widgetFilter;
@@ -98,12 +97,30 @@ export class DefaultPageModelBuilder implements PageModelBuilderInterface<Univer
   }
 }
 
+export const getStartPage = (
+  rootPage: UniversalAbstractItem,
+  startPageDiscriminator: string,
+  host: string,
+): UniversalAbstractItem | undefined => {
+  const startPages = rootPage.childItems?.filter(x => x.isPage && x.type === startPageDiscriminator);
+  if (!startPages) {
+    return undefined;
+  }
+  for (const x of startPages) {
+    const bindings = (x.untypedFields?.BINDINGS as string)?.split(/,|\r\n|\n|\r/).filter(x => !!x);
+    if (bindings && some(bindings, binding => binding === '*' || binding.toLowerCase() === host.toLowerCase())) {
+      return x;
+    }
+  }
+  return undefined;
+};
+
 export const buildPage = (
   startPage: UniversalAbstractItem,
   path: string,
   defaultPageModelBuilder: PageModelBuilderInterface<UniversalAbstractItem>,
   pageModelBuilders?: { [key: string]: PageModelBuilderInterface<UniversalAbstractItem> },
-  siteStructureFilter?: TargetingFilter
+  siteStructureFilter?: TargetingFilter,
 ): PageModel | null => {
   const startPageClone = cloneDeep(startPage);
   abstractItemTreeSetParents(startPageClone);

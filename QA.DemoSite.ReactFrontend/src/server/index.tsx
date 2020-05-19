@@ -11,21 +11,19 @@ import {
 } from 'page-structure/page-structure-context';
 
 import { SiteStructureFilter } from './site-structure-filter';
-import { buildPage, DefaultPageModelBuilder, PageModelBuilderInterface } from '../page-structure/page-model-builder';
+import { buildPage, DefaultPageModelBuilder, getStartPage } from '../page-structure/page-model-builder';
 import { WidgetFilter } from './widget-filter';
-import { UniversalAbstractItem } from '../page-structure';
 import { StartPageModelBuilder } from '../common/page-builders/start-page-model-builder';
 import { BlogPageModelBuilder } from '../common/page-builders/blog-page-model-builder';
 import { PageType } from '../common/enums/abstract-item-type';
-import { mapAbstractItem } from '../common/models/mappers/map-abstract-item';
 import { RedirectInterface } from '../common/models/pages/redirect-interface';
-import { MOVED_PERMANENTLY, MOVED_TEMPORARILY } from 'http-status-codes';
+import { MOVED_PERMANENTLY, MOVED_TEMPORARILY, NOT_FOUND } from 'http-status-codes';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;
 
 const syncLoadAssets = (): void => {
-  // eslint-disable-next-line import/no-dynamic-require,global-require
+  // eslint-disable-next-line import/no-dynamic-require,global-require,@typescript-eslint/no-non-null-assertion
   assets = require(process.env.RAZZLE_ASSETS_MANIFEST!);
 };
 syncLoadAssets();
@@ -35,7 +33,12 @@ const server = express()
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
-    const siteStructure = await apiService.getSiteStructure(741114);
+    const siteStructure = await apiService.getSiteStructure();
+    const startPage = getStartPage(siteStructure, PageType.StartPage, req.headers.host || '');
+    if (!startPage) {
+      res.status(NOT_FOUND).send('Page not found');
+      return;
+    }
 
     const siteStructureFilter = new SiteStructureFilter();
     const widgetFilter = new WidgetFilter(req.path);
@@ -45,17 +48,14 @@ const server = express()
       [PageType.BlogPage]: new BlogPageModelBuilder(defaultPageModelBuilder),
     };
 
-    const pageModel = buildPage(
-      siteStructure,
-      req.path,
-      defaultPageModelBuilder,
-      pageModelBuilders,
-      siteStructureFilter,
-    );
+    const pageModel = buildPage(startPage, req.path, defaultPageModelBuilder, pageModelBuilders, siteStructureFilter);
+    if (!pageModel?.page) {
+      res.status(NOT_FOUND).send('Page not found');
+      return;
+    }
     // console.log('pageModel', pageModel);
-    const modelAsRedirect = (pageModel?.page as unknown) as RedirectInterface;
+    const modelAsRedirect = (pageModel.page as unknown) as RedirectInterface;
     if (modelAsRedirect?.redirectTo) {
-      console.log('found redirect', modelAsRedirect.redirectTo);
       res.redirect(
         modelAsRedirect.permanentRedirect ? MOVED_PERMANENTLY : MOVED_TEMPORARILY,
         modelAsRedirect.redirectTo,
