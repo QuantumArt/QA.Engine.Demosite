@@ -3,6 +3,11 @@ import { UniversalAbstractItem } from '../universal-abstract-item';
 
 const PAGE_CONTEXT_KEY = '__PAGE_STRUCTURE_CONTEXT__';
 
+interface PageStructureContextProps {
+  context: PageStructureContextInterface;
+  children?: React.ReactNode;
+}
+
 export interface PageStructureContextInterface {
   pageAbstractItem?: UniversalAbstractItem;
   remainingPath?: string;
@@ -20,14 +25,10 @@ export const PageStructureContextProvider = ({ children }: Props): JSX.Element =
   if (isClient) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    const { pageAbstractItem, remainingPath } = window[PAGE_CONTEXT_KEY] as PageStructureContextInterface;
+    const context = window[PAGE_CONTEXT_KEY] as PageStructureContextInterface;
     // console.log('context from window: ', pageAbstractItem, remainingPath);
 
-    return (
-      <PageStructureContext.Provider value={{ pageAbstractItem, remainingPath }}>
-        {children}
-      </PageStructureContext.Provider>
-    );
+    return <PageStructureContext.Provider value={context}>{children}</PageStructureContext.Provider>;
   }
   return (
     <PageStructureContext.Consumer>
@@ -39,10 +40,12 @@ export const PageStructureContextProvider = ({ children }: Props): JSX.Element =
   );
 };
 
-export const ServerTestContextProvider: React.FC<PageStructureContextInterface> = ({ pageAbstractItem, children }) => (
-  <PageStructureContext.Provider value={{ pageAbstractItem }}>{children}</PageStructureContext.Provider>
+export const ServerPageStructureContextProvider: React.FC<PageStructureContextProps> = ({
+  context,
+  children,
+}: PageStructureContextProps) => (
+  <PageStructureContext.Provider value={context}>{children}</PageStructureContext.Provider>
 );
 
-export const getPageStructureContextScript = (ctx: PageStructureContextInterface): string => {
-  return `<script>window.${PAGE_CONTEXT_KEY} = ${JSON.stringify(ctx)};</script>`;
-};
+export const getPageStructureContextScript = (ctx: PageStructureContextInterface): string =>
+  `<script>window.${PAGE_CONTEXT_KEY} = ${JSON.stringify(ctx)};</script>`;

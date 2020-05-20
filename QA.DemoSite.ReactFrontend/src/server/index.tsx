@@ -7,17 +7,19 @@ import apiService from 'common/services/api-service';
 import {
   getPageStructureContextScript,
   PageStructureContextInterface,
-  ServerTestContextProvider,
+  ServerPageStructureContextProvider,
 } from 'page-structure/page-structure-context';
 
 import { SiteStructureFilter } from './site-structure-filter';
 import { buildPage, DefaultPageModelBuilder, getStartPage } from '../page-structure/page-model-builder';
 import { WidgetFilter } from './widget-filter';
-import { StartPageModelBuilder } from '../common/page-builders/start-page-model-builder';
-import { BlogPageModelBuilder } from '../common/page-builders/blog-page-model-builder';
+import { StartPageModelBuilder } from './page-builders/start-page-model-builder';
+import { BlogPageModelBuilder } from './page-builders/blog-page-model-builder';
 import { PageType } from '../common/enums/abstract-item-type';
 import { RedirectInterface } from '../common/models/pages/redirect-interface';
 import { MOVED_PERMANENTLY, MOVED_TEMPORARILY, NOT_FOUND } from 'http-status-codes';
+import {mapAbstractItem} from "../common/models/mappers/map-abstract-item";
+import {PageContext} from "../common/models/page-context";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;
@@ -53,6 +55,8 @@ const server = express()
       res.status(NOT_FOUND).send('Page not found');
       return;
     }
+    // запускаем маппинг, чтоб отработали получения вью-моделей в виджетах
+    const mappedPageModel = mapAbstractItem(pageModel.page);
     // console.log('pageModel', pageModel);
     const modelAsRedirect = (pageModel.page as unknown) as RedirectInterface;
     if (modelAsRedirect?.redirectTo) {
@@ -63,14 +67,15 @@ const server = express()
       return;
     }
 
-    const pageCtx: PageStructureContextInterface = {
-      pageAbstractItem: pageModel?.page,
+    const pageCtx: PageContext = {
+      pageAbstractItem: mappedPageModel,
       remainingPath: pageModel?.remainingPath,
+      testContextExtensionField: 'test test test',
     };
     const markup = renderToString(
-      <ServerTestContextProvider pageAbstractItem={pageCtx.pageAbstractItem}>
+      <ServerPageStructureContextProvider context={pageCtx}>
         <App />
-      </ServerTestContextProvider>,
+      </ServerPageStructureContextProvider>,
     );
 
     res.send(

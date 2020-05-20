@@ -15,7 +15,6 @@ export const findPath = (
   path: string,
   targetingFilter?: TargetingFilter,
 ): PathData | null => {
-  console.log('pathfinder enter');
   const tokens = chain(path)
     .split('/')
     .filter(x => !!x)
@@ -26,8 +25,6 @@ export const findPath = (
       abstractItem: root,
     };
   }
-
-  // console.log('pathfinder tokens', tokens);
 
   let stopItem = root;
   let node: UniversalAbstractItem | undefined = root;
@@ -51,7 +48,7 @@ export const findPath = (
     // eslint-disable-next-line no-loop-func
     remainingPath = `/${tokens.filter((value, i) => (i < index ? '' : value)).join('/')}`;
   }
-  // console.log('pathfinder', stopItem, remainingPath);
+
   return {
     abstractItem: stopItem,
     remainingPath,

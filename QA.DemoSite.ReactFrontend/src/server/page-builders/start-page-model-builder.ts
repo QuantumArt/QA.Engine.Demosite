@@ -1,7 +1,7 @@
-import { StartPageModel } from '../models/pages';
+import { StartPageModel } from '../../common/models/pages';
 
 import { chain } from 'lodash';
-import { mapAbstractItem } from '../models/mappers/map-abstract-item';
+import { mapAbstractItem } from '../../common/models/mappers/map-abstract-item';
 import { PathData } from 'page-structure/pathfinder';
 import { PageModelBuilderInterface } from 'page-structure/page-model-builder';
 

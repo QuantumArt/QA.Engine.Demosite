@@ -18,11 +18,11 @@ export const WidgetZone: React.FunctionComponent<Props> = ({ abstractItem, zoneN
     const sortedWidgets = sortBy(childWidgets, x => x.sortOrder);
     return (
       <React.Fragment>
-        <div>Widget zone: {zoneName}</div>
+        <div>{`Widget zone: ${zoneName}`}</div>
         {sortedWidgets.map(x => (
           <Widget widget={x} key={x.id} />
         ))}
-        <div>End widget zone: {zoneName}</div>
+        <div>{`End widget zone: ${zoneName}`}</div>
       </React.Fragment>
     );
   }

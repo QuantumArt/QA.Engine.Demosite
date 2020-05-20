@@ -1,7 +1,7 @@
-import { BlogPageModel, BlogPageViewModel } from '../models/pages';
+import { BlogPageModel, BlogPageViewModel } from '../../common/models/pages';
 import { PathData } from '../../page-structure/pathfinder';
 import { isFinite, trimStart } from 'lodash';
-import { mapAbstractItem } from '../models/mappers/map-abstract-item';
+import { mapAbstractItem } from '../../common/models/mappers/map-abstract-item';
 import { PageModelBuilderInterface } from 'page-structure/page-model-builder';
 import { UniversalAbstractItem } from '../../page-structure';
 
