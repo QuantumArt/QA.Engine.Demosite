@@ -17,10 +17,5 @@ namespace QA.DemoSite.Models.Pages
                 .Select(_ => _.Trim())
                 .ToArray();
         }
-
-        public ITargetingUrlResolver GetUrlResolver()
-        {
-            return null;
-        }
     }
 }

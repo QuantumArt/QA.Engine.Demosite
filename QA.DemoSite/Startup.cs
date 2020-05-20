@@ -40,7 +40,7 @@ namespace QA.DemoSite
         public void ConfigureServices(IServiceCollection services)
         {
             var mvc = services.AddMvc(o => {
-                o.EnableEndpointRouting = false;
+                //o.EnableEndpointRouting = false;
             }).AddRazorRuntimeCompilation();
 
             services.AddLogging();
@@ -87,9 +87,6 @@ namespace QA.DemoSite
             services.AddScoped<FaqWidgetViewModelBuilder>();
             services.AddSingleton<MenuViewModelBuilder>();
 
-            //чтобы аб-тесты работали нужно зарегистрировать сервисы таргетирования
-            services.AddTargeting();
-
             //подключение self-hosted аб-тестов
             services.AddAbTestServices(options =>
             {
@@ -127,21 +124,29 @@ namespace QA.DemoSite
             //включаем инвалидацию по кештегам QP
             app.UseCacheTagsInvalidation(invalidation =>
             {
-                invalidation.RegisterScoped<QpContentCacheTracker>();
+                invalidation.Register<QpContentCacheTracker>();
             });
 
             //активируем структуру сайта (добавляем в http-контекст структуру сайта)
             app.UseSiteStructure();
 
+            app.UseRouting();
+
             //включаем возможность работы onscreen
             var qpSettings = Configuration.GetSection("QpSettings").Get<QpSettings>();
             app.UseOnScreenMode(qpSettings.CustomerCode);
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapContentRoute("default", "{controller}/{action=Index}/{id?}");
-                routes.MapRoute("static controllers route", "{controller}/{action=Index}/{id?}");
+                endpoints.MapAbtestEndpointRoute();
+                endpoints.MapSiteStructureControllerRoute();
             });
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapContentRoute("default", "{controller}/{action=Index}/{id?}");
+            //    routes.MapRoute("static controllers route", "{controller}/{action=Index}/{id?}");
+            //});
         }
     }
 }

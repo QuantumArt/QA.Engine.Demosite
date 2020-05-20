@@ -1,4 +1,5 @@
 using QA.DotNetCore.Engine.Abstractions;
+using QA.DotNetCore.Engine.Abstractions.Targeting;
 using QA.DotNetCore.Engine.QpData;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,11 @@ namespace QA.DemoSite.ViewModels.Builders
 {
     public class MenuViewModelBuilder
     {
+        public MenuViewModelBuilder(ITargetingUrlTransformator urlTransformator)
+        {
+            UrlTransformator = urlTransformator;
+        }
+
         public MenuViewModel Build(IStartPage startPage, AbstractPage currentPage)
         {
             if (startPage == null) return null;
@@ -28,7 +34,7 @@ namespace QA.DemoSite.ViewModels.Builders
                 {
                     Title = tlitem.Title,
                     Alias = tlitem.Alias,
-                    Href = tlitem.GetUrl(),
+                    Href = tlitem.GetUrl(UrlTransformator),
                     Children = resultBuildMenu,
                     IsActive = tlitem.Id == currentPageId,
                     HasActiveChild = resultBuildMenu.Where(w => w.IsActive).Any()
@@ -42,7 +48,9 @@ namespace QA.DemoSite.ViewModels.Builders
 
         private const int MenuDepth = 3;
 
-        private static List<MenuItem> BuildMenu(AbstractPage item, int level, int currentId)
+        public ITargetingUrlTransformator UrlTransformator { get; }
+
+        private List<MenuItem> BuildMenu(AbstractPage item, int level, int currentId)
         {
             if (level <= 0)
             {
@@ -57,7 +65,7 @@ namespace QA.DemoSite.ViewModels.Builders
                 {
                     Title = itemlv.Title,
                     Alias = itemlv.Alias,
-                    Href = itemlv.GetUrl(),
+                    Href = itemlv.GetUrl(UrlTransformator),
                     Children = resultBuidMenu,
                     IsActive = itemlv.Id == currentId || resultBuidMenu.Where(w => w.IsActive).Any()
                 });
