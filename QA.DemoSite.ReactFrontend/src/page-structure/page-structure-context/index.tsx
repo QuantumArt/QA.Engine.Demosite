@@ -1,4 +1,5 @@
 import React from 'react';
+import isNode from 'detect-node';
 import { UniversalAbstractItem } from '../universal-abstract-item';
 
 const PAGE_CONTEXT_KEY = '__PAGE_STRUCTURE_CONTEXT__';
@@ -20,8 +21,8 @@ interface Props {
 export const PageStructureContext = React.createContext<PageStructureContextInterface | undefined>(undefined);
 
 export const PageStructureContextProvider = ({ children }: Props): JSX.Element => {
-  const isClient = !!(typeof window !== 'undefined' && window.document);
-  // console.log(`pagestructure context provider. isClient: ${isClient}`);
+  const isClient = !isNode;
+  // console.log('isClient', isClient);
   if (isClient) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore

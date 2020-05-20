@@ -6,7 +6,6 @@ import App from 'common/components/app';
 import apiService from 'common/services/api-service';
 import {
   getPageStructureContextScript,
-  PageStructureContextInterface,
   ServerPageStructureContextProvider,
 } from 'page-structure/page-structure-context';
 
@@ -18,8 +17,8 @@ import { BlogPageModelBuilder } from './page-builders/blog-page-model-builder';
 import { PageType } from '../common/enums/abstract-item-type';
 import { RedirectInterface } from '../common/models/pages/redirect-interface';
 import { MOVED_PERMANENTLY, MOVED_TEMPORARILY, NOT_FOUND } from 'http-status-codes';
-import {mapAbstractItem} from "../common/models/mappers/map-abstract-item";
-import {PageContext} from "../common/models/page-context";
+import { mapAbstractItem } from '../common/models/mappers/map-abstract-item';
+import { PageContext } from '../common/models/page-context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;

@@ -15,10 +15,10 @@ const App = (): JSX.Element => (
     <PageStructureContext.Consumer>
       {(context?: PageStructureContextInterface) => {
         const ctx = context as PageContext;
-        console.log('consumed context', ctx);
-        console.log(ctx.testContextExtensionField);
-        if (context?.pageAbstractItem) {
-          const mappedPage = mapAbstractItem(context.pageAbstractItem);
+        // console.log('consumed context', ctx);
+        // console.log(ctx.testContextExtensionField);
+        if (ctx?.pageAbstractItem) {
+          const mappedPage = mapAbstractItem(ctx.pageAbstractItem);
           // console.log('consumed and mapped page:', mappedPage);
           // console.log('remaining path:', context.remainingPath);
           return <Page page={mappedPage} />;
