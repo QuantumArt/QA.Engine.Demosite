@@ -3,6 +3,7 @@ import fetch from 'isomorphic-unfetch';
 
 import { UniversalAbstractItem } from 'page-structure/universal-abstract-item';
 import qs from 'qs';
+import {abstractItemTreeSetParents} from "../../page-structure/abstract-item-tree-parent-utils";
 
 class ApiService {
   readonly headers = {
@@ -37,7 +38,9 @@ class ApiService {
 
     const url = `http://localhost:5000/api/sitestructure/?${qs.stringify(params)}`;
     const res = await this.apiRequest(url);
-    return await this.getSiteStructureModel(res);
+    const model = await this.getSiteStructureModel(res);
+    abstractItemTreeSetParents(model);
+    return model;
   }
 }
 

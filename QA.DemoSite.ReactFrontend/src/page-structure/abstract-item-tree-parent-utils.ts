@@ -9,7 +9,10 @@ export const abstractItemTreeSetParents = (root: UniversalAbstractItem): void =>
   }
 };
 
-export const abstractItemTreeRemoveParents = (root: UniversalAbstractItem): void => {
+export const abstractItemTreeRemoveParents = (root?: UniversalAbstractItem): void => {
+  if (!root) {
+    return;
+  }
   if (root.childItems) {
     root.childItems.forEach(x => {
       abstractItemTreeRemoveParents(x);

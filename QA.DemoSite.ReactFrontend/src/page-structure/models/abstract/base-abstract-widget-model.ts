@@ -1,5 +1,5 @@
 import { BaseAbstractItemModel } from './base-abstract-item-model';
-import { UniversalAbstractItem } from '../universal-abstract-item';
+import { UniversalAbstractItem } from '../../universal-abstract-item';
 
 export abstract class BaseAbstractWidgetModel extends BaseAbstractItemModel {
   constructor(

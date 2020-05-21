@@ -1,7 +1,14 @@
+import isNode from 'detect-node';
 import { BaseAbstractItemModel, UniversalAbstractItem } from 'page-structure';
 import { AbstractItemType } from 'common/enums/abstract-item-type';
 import { BlogPageModel, RedirectPageModel, RootPageModel, StartPageModel, TextPageModel } from '../pages';
-import { BannerItemWidgetModel, BannerWidgetModel, FaqWidgetModel, HtmlWidgetModel, TopMenuWidgetModel } from '../widgets';
+import {
+  BannerItemWidgetModel,
+  BannerWidgetModel,
+  FaqWidgetModel,
+  HtmlWidgetModel,
+  TopMenuWidgetModel,
+} from '../widgets';
 
 export const mapAbstractItem = (universalItem: UniversalAbstractItem): BaseAbstractItemModel => {
   if (universalItem instanceof BaseAbstractItemModel) {
@@ -24,7 +31,12 @@ export const mapAbstractItem = (universalItem: UniversalAbstractItem): BaseAbstr
     case AbstractItemType.BannerWidget:
       return new BannerWidgetModel(universalItem, mapAbstractItem);
     case AbstractItemType.FaqWidget:
-      return new FaqWidgetModel(universalItem, mapAbstractItem);
+      // eslint-disable-next-line no-case-declarations
+      const faqWidgetModel = new FaqWidgetModel(universalItem, mapAbstractItem);
+      if (isNode) {
+        faqWidgetModel.initViewModel();
+      }
+      return faqWidgetModel;
     case AbstractItemType.HtmlWidget:
       return new HtmlWidgetModel(universalItem, mapAbstractItem);
     case AbstractItemType.TopMenuWidget:

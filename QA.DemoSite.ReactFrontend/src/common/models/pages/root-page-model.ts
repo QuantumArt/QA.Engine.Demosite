@@ -1,3 +1,5 @@
 import { BaseAbstractPageModel } from 'page-structure';
 
-export class RootPageModel extends BaseAbstractPageModel {}
+export class RootPageModel extends BaseAbstractPageModel {
+  readonly isStartPage: boolean = false;
+}

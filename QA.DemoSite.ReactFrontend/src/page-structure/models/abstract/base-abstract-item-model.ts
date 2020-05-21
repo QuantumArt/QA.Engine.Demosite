@@ -1,9 +1,9 @@
-import { UniversalAbstractItem } from '../universal-abstract-item';
+import { UniversalAbstractItem } from '../../universal-abstract-item';
 
 export abstract class BaseAbstractItemModel implements UniversalAbstractItem {
   alias?: string;
-  parent?: UniversalAbstractItem;
-  childItems?: UniversalAbstractItem[];
+  parent?: BaseAbstractItemModel;
+  childItems?: BaseAbstractItemModel[];
   cultureId?: number;
   id: number;
   isPage: boolean;

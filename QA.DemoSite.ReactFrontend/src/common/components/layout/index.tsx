@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseAbstractPageModel } from '../../../page-structure/models';
+import { BaseAbstractPageModel } from '../../../page-structure/models/abstract';
 import { WidgetZone } from '../widget-zone';
 
 interface Props {

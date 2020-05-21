@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseAbstractPageModel } from '../../../page-structure/models';
+import { BaseAbstractPageModel } from '../../../page-structure/models/abstract';
 import { PageProps } from '../page-props';
 import { PageType } from '../../enums/abstract-item-type';
 import { TextPage } from '../pages/text-page';

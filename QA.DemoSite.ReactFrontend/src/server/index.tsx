@@ -19,6 +19,9 @@ import { RedirectInterface } from '../common/models/pages/redirect-interface';
 import { MOVED_PERMANENTLY, MOVED_TEMPORARILY, NOT_FOUND } from 'http-status-codes';
 import { mapAbstractItem } from '../common/models/mappers/map-abstract-item';
 import { PageContext } from '../common/models/page-context';
+import { abstractItemTreeSetParents } from '../page-structure/abstract-item-tree-parent-utils';
+import { getBreadcrumpsModel } from './breadcrumps-builder';
+import { BaseAbstractPageModel } from '../page-structure/models/abstract';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;
@@ -35,6 +38,7 @@ const server = express()
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
     const siteStructure = await apiService.getSiteStructure();
+
     const startPage = getStartPage(siteStructure, PageType.StartPage, req.headers.host || '');
     if (!startPage) {
       res.status(NOT_FOUND).send('Page not found');
@@ -55,7 +59,8 @@ const server = express()
       return;
     }
     // запускаем маппинг, чтоб отработали получения вью-моделей в виджетах
-    const mappedPageModel = mapAbstractItem(pageModel.page);
+    const mappedPageModel = mapAbstractItem(pageModel.page) as BaseAbstractPageModel;
+    console.log(pageModel.page);
     // console.log('pageModel', pageModel);
     const modelAsRedirect = (pageModel.page as unknown) as RedirectInterface;
     if (modelAsRedirect?.redirectTo) {
@@ -69,7 +74,7 @@ const server = express()
     const pageCtx: PageContext = {
       pageAbstractItem: mappedPageModel,
       remainingPath: pageModel?.remainingPath,
-      testContextExtensionField: 'test test test',
+      breadcrumps: getBreadcrumpsModel(mappedPageModel),
     };
     const markup = renderToString(
       <ServerPageStructureContextProvider context={pageCtx}>

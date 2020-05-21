@@ -9,6 +9,7 @@ import {
 import { mapAbstractItem } from '../../models/mappers/map-abstract-item';
 import { Page } from '../page';
 import { PageContext } from '../../models/page-context';
+import { BaseAbstractPageModel } from '../../../page-structure/models/abstract';
 
 const App = (): JSX.Element => (
   <PageStructureContextProvider>
@@ -18,7 +19,7 @@ const App = (): JSX.Element => (
         // console.log('consumed context', ctx);
         // console.log(ctx.testContextExtensionField);
         if (ctx?.pageAbstractItem) {
-          const mappedPage = mapAbstractItem(ctx.pageAbstractItem);
+          const mappedPage = mapAbstractItem(ctx.pageAbstractItem) as BaseAbstractPageModel;
           // console.log('consumed and mapped page:', mappedPage);
           // console.log('remaining path:', context.remainingPath);
           return <Page page={mappedPage} />;

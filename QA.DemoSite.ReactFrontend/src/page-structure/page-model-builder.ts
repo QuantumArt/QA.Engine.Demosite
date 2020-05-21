@@ -123,7 +123,6 @@ export const buildPage = (
   siteStructureFilter?: TargetingFilter,
 ): PageModel | null => {
   const startPageClone = cloneDeep(startPage);
-  abstractItemTreeSetParents(startPageClone);
   const pathData = findPath(startPageClone, path, siteStructureFilter);
   if (pathData?.abstractItem) {
     const pageModelBuilder = pageModelBuilders?.[pathData.abstractItem.type];
@@ -131,9 +130,6 @@ export const buildPage = (
       ? pageModelBuilder.buildModelFromPathData(pathData)
       : defaultPageModelBuilder.buildModelFromPathData(pathData);
     // const pageModel = buildPageModel(pathData.abstractItem, widgetFilter);
-    if (pageModel) {
-      abstractItemTreeRemoveParents(pageModel);
-    }
 
     return {
       page: pageModel,

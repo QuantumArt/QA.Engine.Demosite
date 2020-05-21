@@ -1,6 +1,9 @@
 import React from 'react';
 import isNode from 'detect-node';
 import { UniversalAbstractItem } from '../universal-abstract-item';
+import { cloneDeep } from 'lodash';
+import { abstractItemTreeRemoveParents } from '../abstract-item-tree-parent-utils';
+import { BaseAbstractPageModel } from '../models/abstract';
 
 const PAGE_CONTEXT_KEY = '__PAGE_STRUCTURE_CONTEXT__';
 
@@ -10,7 +13,7 @@ interface PageStructureContextProps {
 }
 
 export interface PageStructureContextInterface {
-  pageAbstractItem?: UniversalAbstractItem;
+  pageAbstractItem?: BaseAbstractPageModel;
   remainingPath?: string;
 }
 
@@ -48,5 +51,8 @@ export const ServerPageStructureContextProvider: React.FC<PageStructureContextPr
   <PageStructureContext.Provider value={context}>{children}</PageStructureContext.Provider>
 );
 
-export const getPageStructureContextScript = (ctx: PageStructureContextInterface): string =>
-  `<script>window.${PAGE_CONTEXT_KEY} = ${JSON.stringify(ctx)};</script>`;
+export const getPageStructureContextScript = (ctx: PageStructureContextInterface): string => {
+  const ctxClone = cloneDeep(ctx);
+  abstractItemTreeRemoveParents(ctxClone.pageAbstractItem);
+  return `<script>window.${PAGE_CONTEXT_KEY} = ${JSON.stringify(ctxClone)};</script>`;
+};

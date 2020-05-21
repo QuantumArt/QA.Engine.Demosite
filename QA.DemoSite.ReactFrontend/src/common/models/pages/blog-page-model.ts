@@ -33,4 +33,5 @@ export interface BlogPageViewModel {
 
 export class BlogPageModel extends BaseAbstractPageModel {
   viewModel?: BlogPageViewModel;
+  readonly isStartPage: boolean = false;
 }

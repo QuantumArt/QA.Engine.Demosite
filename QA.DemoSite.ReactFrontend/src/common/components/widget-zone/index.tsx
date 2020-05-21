@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseAbstractItemModel, BaseAbstractWidgetModel } from 'page-structure/models';
+import { BaseAbstractItemModel, BaseAbstractWidgetModel } from 'page-structure/models/abstract';
 import { sortBy } from 'lodash';
 import { Widget } from '../widget';
 

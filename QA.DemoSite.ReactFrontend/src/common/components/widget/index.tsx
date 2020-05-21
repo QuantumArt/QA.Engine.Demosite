@@ -1,5 +1,5 @@
 import React from 'react';
-import { BaseAbstractWidgetModel } from '../../../page-structure/models';
+import { BaseAbstractWidgetModel } from '../../../page-structure/models/abstract';
 import { WidgetType } from '../../enums/abstract-item-type';
 import { BannerItemWidget } from '../widgets/banner-item-widget';
 import {

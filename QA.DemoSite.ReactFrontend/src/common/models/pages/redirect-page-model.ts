@@ -7,4 +7,5 @@ export class RedirectPageModel extends BaseAbstractPageModel implements Redirect
   }
 
   permanentRedirect: boolean = true;
+  readonly isStartPage: boolean = false;
 }
