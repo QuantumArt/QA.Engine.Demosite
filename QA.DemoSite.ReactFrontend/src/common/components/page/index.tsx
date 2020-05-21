@@ -1,14 +1,11 @@
 import React from 'react';
-import { BaseAbstractPageModel } from '../../../page-structure/models/abstract';
 import { PageProps } from '../page-props';
-import { PageType } from '../../enums/abstract-item-type';
-import { TextPage } from '../pages/text-page';
-import { BlogPageModel, TextPageModel } from '../../models/pages';
-import { BlogPage } from '../pages/blog-page';
+import { PageType } from 'common/enums';
+import { BlogPage, TextPage } from '../pages';
+import { BasePageModel } from 'page-structure';
+import { BlogPageModel, TextPageModel } from 'common/models/pages';
 
-export const Page: React.FunctionComponent<PageProps<BaseAbstractPageModel>> = ({
-  page,
-}: PageProps<BaseAbstractPageModel>) => {
+export const Page: React.FunctionComponent<PageProps<BasePageModel>> = ({ page }: PageProps<BasePageModel>) => {
   const pageType = page.type as PageType;
   switch (pageType) {
     case PageType.TextPage:

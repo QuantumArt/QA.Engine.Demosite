@@ -1,4 +1,9 @@
-import { BaseAbstractPageModel } from 'page-structure';
+import { BasePageModel } from 'page-structure';
+
+export enum BlogPageType {
+  Index,
+  Details,
+}
 
 export interface BlogItemInListViewModel {
   id: number;
@@ -11,12 +16,12 @@ export interface BlogItemInListViewModel {
   url: string;
   published: boolean;
 }
-export interface BlogPageIndexModel {
+export interface BlogPageIndexViewModel {
   header: string;
   items?: BlogItemInListViewModel[];
 }
 
-export interface BlogPageDetailsModel {
+export interface BlogPageDetailsViewModel {
   title: string;
   categoryName: string;
   date: string;
@@ -26,12 +31,7 @@ export interface BlogPageDetailsModel {
   youtubeVideoCode: string;
 }
 
-export interface BlogPageViewModel {
-  isDetails: boolean;
-  data: BlogPageIndexModel | BlogPageDetailsModel;
-}
-
-export class BlogPageModel extends BaseAbstractPageModel {
-  viewModel?: BlogPageViewModel;
-  readonly isStartPage: boolean = false;
+export interface BlogPageModel extends BasePageModel {
+  blogPageType: BlogPageType;
+  viewModel: BlogPageIndexViewModel | BlogPageDetailsViewModel;
 }

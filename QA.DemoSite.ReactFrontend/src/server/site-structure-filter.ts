@@ -1,8 +1,7 @@
-import { TargetingFilter } from 'page-structure/pathfinder';
-import { UniversalAbstractItem } from 'page-structure/universal-abstract-item';
+import { BaseAbstractItem, TargetingFilter } from 'page-structure';
 
 export class SiteStructureFilter implements TargetingFilter {
-  match(item: UniversalAbstractItem): boolean {
+  match(item: BaseAbstractItem): boolean {
     return true;
   }
 }

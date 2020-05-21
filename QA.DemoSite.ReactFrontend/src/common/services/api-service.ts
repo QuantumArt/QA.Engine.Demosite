@@ -1,9 +1,10 @@
 import { OK } from 'http-status-codes';
 import fetch from 'isomorphic-unfetch';
 
-import { UniversalAbstractItem } from 'page-structure/universal-abstract-item';
+import { UniversalAbstractItem } from 'page-structure';
 import qs from 'qs';
-import {abstractItemTreeSetParents} from "../../page-structure/abstract-item-tree-parent-utils";
+
+import { BlogPageDetailsViewModel, BlogPageIndexViewModel, FaqWidgetItemViewModel } from 'common/models';
 
 class ApiService {
   readonly headers = {
@@ -38,9 +39,30 @@ class ApiService {
 
     const url = `http://localhost:5000/api/sitestructure/?${qs.stringify(params)}`;
     const res = await this.apiRequest(url);
-    const model = await this.getSiteStructureModel(res);
-    abstractItemTreeSetParents(model);
-    return model;
+    return await this.getSiteStructureModel(res);
+  }
+
+  getFaqQuestions(questions: number[]): FaqWidgetItemViewModel[] | undefined {
+    return [];
+  }
+
+  getBlogItems(): BlogPageIndexViewModel {
+    return {
+      header: '',
+      items: [],
+    };
+  }
+
+  getBlogItemDetails(id: number): BlogPageDetailsViewModel {
+    return {
+      categoryName: 'blabla',
+      date: 'kjdfhgk',
+      image: 'jlsdfkg',
+      tags: [],
+      text: 'skjdfbnk',
+      title: 'skldfn',
+      youtubeVideoCode: 'sjkdnfk',
+    };
   }
 }
 

@@ -1,5 +1,4 @@
-import { TargetingFilter } from '../page-structure/pathfinder';
-import { UniversalAbstractItem } from '../page-structure';
+import { BaseAbstractItem, TargetingFilter } from 'page-structure';
 
 export class WidgetFilter implements TargetingFilter {
   private _url: string;
@@ -7,7 +6,7 @@ export class WidgetFilter implements TargetingFilter {
     this._url = url;
   }
 
-  match(item: UniversalAbstractItem): boolean {
+  match(item: BaseAbstractItem): boolean {
     return true;
   }
 }

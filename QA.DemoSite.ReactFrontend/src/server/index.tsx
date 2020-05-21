@@ -10,18 +10,15 @@ import {
 } from 'page-structure/page-structure-context';
 
 import { SiteStructureFilter } from './site-structure-filter';
-import { buildPage, DefaultPageModelBuilder, getStartPage } from '../page-structure/page-model-builder';
 import { WidgetFilter } from './widget-filter';
-import { StartPageModelBuilder } from './page-builders/start-page-model-builder';
-import { BlogPageModelBuilder } from './page-builders/blog-page-model-builder';
 import { PageType } from '../common/enums/abstract-item-type';
-import { RedirectInterface } from '../common/models/pages/redirect-interface';
 import { MOVED_PERMANENTLY, MOVED_TEMPORARILY, NOT_FOUND } from 'http-status-codes';
-import { mapAbstractItem } from '../common/models/mappers/map-abstract-item';
+import { mapAbstractItem } from './models/mappers/map-abstract-item';
 import { PageContext } from '../common/models/page-context';
-import { abstractItemTreeSetParents } from '../page-structure/abstract-item-tree-parent-utils';
 import { getBreadcrumpsModel } from './breadcrumps-builder';
-import { BaseAbstractPageModel } from '../page-structure/models/abstract';
+import { BaseAbstractPageItem } from '../page-structure/models/abstract';
+import { findPath, getStartPage } from '../page-structure/pathfinder';
+import { ModelFactory } from './model-build/model-factory';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;
@@ -37,44 +34,36 @@ const server = express()
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
-    const siteStructure = await apiService.getSiteStructure();
+    const rawSiteStructure = await apiService.getSiteStructure();
+    // вот это можно закэшировать
+    const siteStructure = mapAbstractItem(rawSiteStructure);
 
-    const startPage = getStartPage(siteStructure, PageType.StartPage, req.headers.host || '');
+    const startPage = getStartPage(siteStructure as BaseAbstractPageItem, PageType.StartPage, req.headers.host || '');
     if (!startPage) {
       res.status(NOT_FOUND).send('Page not found');
       return;
     }
-
     const siteStructureFilter = new SiteStructureFilter();
-    const widgetFilter = new WidgetFilter(req.path);
-    const defaultPageModelBuilder = new DefaultPageModelBuilder(widgetFilter);
-    const pageModelBuilders = {
-      [PageType.StartPage]: new StartPageModelBuilder(),
-      [PageType.BlogPage]: new BlogPageModelBuilder(defaultPageModelBuilder),
-    };
+    const path = findPath(startPage, req.path, siteStructureFilter);
+    // console.log('Found path: ', path);
 
-    const pageModel = buildPage(startPage, req.path, defaultPageModelBuilder, pageModelBuilders, siteStructureFilter);
-    if (!pageModel?.page) {
-      res.status(NOT_FOUND).send('Page not found');
+    const widgetFilter = new WidgetFilter(req.path);
+
+    const modelFactory = new ModelFactory(widgetFilter);
+    const pageModel = modelFactory.buildPageModel(path);
+    if (pageModel.redirectTo) {
+      res.redirect(pageModel.permanentRedirect ? MOVED_PERMANENTLY : MOVED_TEMPORARILY, pageModel.redirectTo);
       return;
     }
-    // запускаем маппинг, чтоб отработали получения вью-моделей в виджетах
-    const mappedPageModel = mapAbstractItem(pageModel.page) as BaseAbstractPageModel;
-    console.log(pageModel.page);
-    // console.log('pageModel', pageModel);
-    const modelAsRedirect = (pageModel.page as unknown) as RedirectInterface;
-    if (modelAsRedirect?.redirectTo) {
-      res.redirect(
-        modelAsRedirect.permanentRedirect ? MOVED_PERMANENTLY : MOVED_TEMPORARILY,
-        modelAsRedirect.redirectTo,
-      );
+    if (pageModel.notFound) {
+      res.status(NOT_FOUND).send('Page not found');
       return;
     }
 
     const pageCtx: PageContext = {
-      pageAbstractItem: mappedPageModel,
-      remainingPath: pageModel?.remainingPath,
-      breadcrumps: getBreadcrumpsModel(mappedPageModel),
+      pageModel: pageModel.pageModel,
+      remainingPath: path?.remainingPath,
+      breadcrumps: getBreadcrumpsModel(path?.abstractItem),
     };
     const markup = renderToString(
       <ServerPageStructureContextProvider context={pageCtx}>

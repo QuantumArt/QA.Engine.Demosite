@@ -1,3 +1,4 @@
-export * from './base-abstract-item-model';
-export * from './base-abstract-page-model';
-export * from './base-abstract-widget-model';
+export * from './base-abstract-item';
+export * from './base-abstract-page-item';
+export * from './base-abstract-widget-item';
+export * from './universal-abstract-item';

@@ -1,5 +1,5 @@
-import { BaseAbstractPageModel } from 'page-structure/models/abstract';
+import { BasePageModel } from 'page-structure';
 
-export interface PageProps<T extends BaseAbstractPageModel> {
+export interface PageProps<T extends BasePageModel> {
   page: T;
 }

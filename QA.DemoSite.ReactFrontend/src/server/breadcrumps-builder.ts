@@ -1,17 +1,17 @@
-import { BaseAbstractItemModel, BaseAbstractPageModel } from '../page-structure/models/abstract';
-import { BreadcrumpModel, BreadcrumpsModel } from '../common/models/breadcrumps-model';
+import { BaseAbstractItem, BaseAbstractPageItem } from '../page-structure';
+import { BreadcrumpModel, BreadcrumpsModel } from 'common/models/breadcrumps-model';
 
-export const getBreadcrumpsModel = (page?: BaseAbstractPageModel, additional?: string): BreadcrumpsModel => {
+export const getBreadcrumpsModel = (page?: BaseAbstractPageItem, additional?: string): BreadcrumpsModel => {
   const breadcrumps: BreadcrumpModel[] = [];
   if (additional) {
     breadcrumps.push({ title: additional });
   }
-  let currentPage: BaseAbstractItemModel | undefined = page;
+  let currentPage: BaseAbstractItem | undefined = page;
   if (currentPage) {
     // console.log('breadcrumps current page', currentPage);
-    while (currentPage && (currentPage.isPage ? !(currentPage as BaseAbstractPageModel).isStartPage : true)) {
+    while (currentPage && (currentPage.isPage ? !(currentPage as BaseAbstractPageItem).isStartPage : true)) {
       if (currentPage.isPage) {
-        breadcrumps.push({ title: currentPage.title || '', url: (currentPage as BaseAbstractPageModel).trail });
+        breadcrumps.push({ title: currentPage.title || '', url: (currentPage as BaseAbstractPageItem).trail });
       }
 
       currentPage = currentPage.parent;

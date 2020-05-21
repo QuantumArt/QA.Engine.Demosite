@@ -1,6 +1,6 @@
 import React from 'react';
-import { BannerWidgetModel } from '../../../models/widgets';
-import { WidgetProps } from '../../widget-props';
+import { WidgetProps } from 'common/components/widget-props';
+import { BannerWidgetModel } from 'common/models';
 
 export const BannerWidget: React.FunctionComponent<WidgetProps<BannerWidgetModel>> = ({ widget }) => (
   <div>This is banner widget</div>

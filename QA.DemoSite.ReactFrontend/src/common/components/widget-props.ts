@@ -1,5 +1,5 @@
-import { BaseAbstractWidgetModel } from '../../page-structure/models/abstract';
+import { BaseWidgetModel } from 'page-structure';
 
-export interface WidgetProps<T extends BaseAbstractWidgetModel> {
+export interface WidgetProps<T extends BaseWidgetModel> {
   widget: T;
 }

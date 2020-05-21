@@ -1,27 +1,28 @@
-import { UniversalAbstractItem } from '../../universal-abstract-item';
+import { UniversalAbstractItem } from './universal-abstract-item';
 
-export abstract class BaseAbstractItemModel implements UniversalAbstractItem {
-  alias?: string;
-  parent?: BaseAbstractItemModel;
-  childItems?: BaseAbstractItemModel[];
-  cultureId?: number;
-  id: number;
-  isPage: boolean;
-  regionIds?: number[];
-  sortOrder: number;
-  title?: string;
-  type: string;
+export abstract class BaseAbstractItem {
+  readonly alias?: string;
+  readonly parent?: BaseAbstractItem;
+  readonly childItems?: ReadonlyArray<BaseAbstractItem>;
+  readonly cultureId?: number;
+  readonly id: number;
+  readonly isPage: boolean;
+  readonly regionIds?: number[];
+  readonly sortOrder: number;
+  readonly title?: string;
+  readonly type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  untypedFields: { [p: string]: any };
+  readonly untypedFields: { [key: string]: any };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  viewModel?: any;
 
-  protected constructor(
+  constructor(
     abstractItem: UniversalAbstractItem,
-    mapper: (x: UniversalAbstractItem) => BaseAbstractItemModel,
+    mapper: (x: UniversalAbstractItem, parent: BaseAbstractItem) => BaseAbstractItem,
+    parent?: BaseAbstractItem,
   ) {
     this.alias = abstractItem.alias;
-    this.childItems = abstractItem.childItems?.map(x => mapper(x));
+    this.childItems = abstractItem.childItems?.map(x => mapper(x, this));
+    this.parent = parent;
     this.cultureId = abstractItem.cultureId;
     this.id = abstractItem.id;
     this.regionIds = abstractItem.regionIds;
@@ -30,7 +31,6 @@ export abstract class BaseAbstractItemModel implements UniversalAbstractItem {
     this.type = abstractItem.type;
     this.untypedFields = abstractItem.untypedFields;
     this.isPage = abstractItem.isPage;
-    this.viewModel = abstractItem.viewModel;
   }
 
   protected getField<T>(fieldName: string, defaultValue: T): T {

@@ -1,3 +1,3 @@
-import { BaseAbstractWidgetModel } from 'page-structure';
+import { BaseWidgetModel } from 'page-structure';
 
-export class BannerWidgetModel extends BaseAbstractWidgetModel {}
+export interface BannerWidgetModel extends BaseWidgetModel {}

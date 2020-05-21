@@ -10,6 +10,4 @@ export interface UniversalAbstractItem {
   childItems?: UniversalAbstractItem[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly untypedFields: { [key: string]: any };
-  parent?: UniversalAbstractItem;
-  viewModel?: any;
 }

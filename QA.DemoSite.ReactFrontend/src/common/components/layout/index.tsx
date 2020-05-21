@@ -1,9 +1,9 @@
 import React from 'react';
-import { BaseAbstractPageModel } from '../../../page-structure/models/abstract';
 import { WidgetZone } from '../widget-zone';
+import { BasePageModel } from 'page-structure';
 
 interface Props {
-  page: BaseAbstractPageModel;
+  page: BasePageModel;
   children?: React.ReactNode;
 }
 

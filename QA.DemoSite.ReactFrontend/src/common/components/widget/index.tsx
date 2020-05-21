@@ -1,23 +1,19 @@
 import React from 'react';
-import { BaseAbstractWidgetModel } from '../../../page-structure/models/abstract';
-import { WidgetType } from '../../enums/abstract-item-type';
-import { BannerItemWidget } from '../widgets/banner-item-widget';
+import { WidgetType } from 'common/enums';
+import { BannerItemWidget, BannerWidget, FaqWidget, HtmlWidget, TopMenuWidget } from '../widgets';
+import { WidgetProps } from '../widget-props';
+import { BaseWidgetModel } from 'page-structure';
 import {
   BannerItemWidgetModel,
   BannerWidgetModel,
   FaqWidgetModel,
   HtmlWidgetModel,
   TopMenuWidgetModel,
-} from '../../models/widgets';
-import { BannerWidget } from '../widgets/banner-widget';
-import { FaqWidget } from '../widgets/faq-widget';
-import { HtmlWidget } from '../widgets/html-widget';
-import { TopMenuWidget } from '../widgets/top-menu-widget';
-import { WidgetProps } from '../widget-props';
+} from 'common/models';
 
-export const Widget: React.FunctionComponent<WidgetProps<BaseAbstractWidgetModel>> = ({
+export const Widget: React.FunctionComponent<WidgetProps<BaseWidgetModel>> = ({
   widget,
-}: WidgetProps<BaseAbstractWidgetModel>) => {
+}: WidgetProps<BaseWidgetModel>) => {
   const widgetType = widget.type as WidgetType;
   switch (widgetType) {
     case WidgetType.BannerItemWidget:

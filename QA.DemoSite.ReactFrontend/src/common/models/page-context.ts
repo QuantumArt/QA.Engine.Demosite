@@ -1,4 +1,4 @@
-import { PageStructureContextInterface } from '../../page-structure/page-structure-context';
+import { PageStructureContextInterface } from 'page-structure';
 import { BreadcrumpsModel } from './breadcrumps-model';
 
 export interface PageContext extends PageStructureContextInterface {

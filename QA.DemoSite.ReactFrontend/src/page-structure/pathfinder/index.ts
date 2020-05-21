@@ -1,20 +1,40 @@
-import { chain } from 'lodash';
-import { UniversalAbstractItem } from 'page-structure/universal-abstract-item';
+import { chain, some } from 'lodash';
+import { BaseAbstractItem, BaseAbstractPageItem } from '../models/abstract';
 
 export interface PathData {
-  abstractItem: UniversalAbstractItem;
+  abstractItem: BaseAbstractPageItem;
   remainingPath?: string;
 }
 
 export interface TargetingFilter {
-  match: (item: UniversalAbstractItem) => boolean;
+  match: (item: BaseAbstractItem) => boolean;
 }
 
+export const getStartPage = (
+  rootPage: BaseAbstractPageItem,
+  startPageDiscriminator: string,
+  host: string,
+): BaseAbstractPageItem | undefined => {
+  const startPages = rootPage.childItems
+    ?.filter(x => x.isPage && x.type === startPageDiscriminator)
+    .map(x => x as BaseAbstractPageItem);
+  if (!startPages) {
+    return undefined;
+  }
+  for (const x of startPages) {
+    const bindings = (x.untypedFields?.BINDINGS as string)?.split(/,|\r\n|\n|\r/).filter(binding => !!binding);
+    if (bindings && some(bindings, binding => binding === '*' || binding.toLowerCase() === host.toLowerCase())) {
+      return x;
+    }
+  }
+  return undefined;
+};
+
 export const findPath = (
-  root: UniversalAbstractItem,
+  root: BaseAbstractPageItem,
   path: string,
   targetingFilter?: TargetingFilter,
-): PathData | null => {
+): PathData | undefined => {
   const tokens = chain(path)
     .split('/')
     .filter(x => !!x)
@@ -27,7 +47,7 @@ export const findPath = (
   }
 
   let stopItem = root;
-  let node: UniversalAbstractItem | undefined = root;
+  let node: BaseAbstractPageItem | undefined = root;
   let remainingPath = path;
   let index = 0;
 
@@ -36,7 +56,7 @@ export const findPath = (
 
     node = node?.childItems?.find(
       child => child?.alias?.toLowerCase() === lowerCaseToken && (!targetingFilter || targetingFilter.match(child)),
-    );
+    ) as BaseAbstractPageItem;
     // console.log('pathfinder step', { token, node });
 
     if (!node) {
