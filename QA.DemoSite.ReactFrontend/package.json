@@ -9,6 +9,7 @@
     "start:prod": "NODE_ENV=production node build/server.js"
   },
   "dependencies": {
+    "bootstrap": "^4.5.0",
     "detect-node": "^2.0.4",
     "express": "4.17.1",
     "http-status-codes": "^1.4.0",
@@ -16,6 +17,7 @@
     "lodash": "^4.17.15",
     "qs": "^6.9.4",
     "react": "16.13.1",
+    "react-bootstrap": "^1.0.1",
     "react-dom": "16.13.1"
   },
   "devDependencies": {

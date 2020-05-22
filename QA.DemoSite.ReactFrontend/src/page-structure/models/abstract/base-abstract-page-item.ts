@@ -6,6 +6,10 @@ export abstract class BaseAbstractPageItem extends BaseAbstractItem {
 
   private _trail?: string;
 
+  get isVisible(): boolean {
+    return this.getField<boolean>('ISVISIBLE', false);
+  }
+
   get trail(): string {
     if (!this._trail) {
       let sb = '';

@@ -11,14 +11,15 @@ import {
 
 import { SiteStructureFilter } from './site-structure-filter';
 import { WidgetFilter } from './widget-filter';
-import { PageType } from '../common/enums/abstract-item-type';
+import { PageType } from 'common/enums';
 import { MOVED_PERMANENTLY, MOVED_TEMPORARILY, NOT_FOUND } from 'http-status-codes';
 import { mapAbstractItem } from './models/mappers/map-abstract-item';
-import { PageContext } from '../common/models/page-context';
+import { PageContext } from 'common/models';
 import { getBreadcrumpsModel } from './breadcrumps-builder';
 import { BaseAbstractPageItem } from '../page-structure/models/abstract';
 import { findPath, getStartPage } from '../page-structure/pathfinder';
 import { ModelFactory } from './model-build/model-factory';
+import { buildTopMenu } from './top-menu-builder';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;
@@ -64,6 +65,7 @@ const server = express()
       pageModel: pageModel.pageModel,
       remainingPath: path?.remainingPath,
       breadcrumps: getBreadcrumpsModel(path?.abstractItem),
+      topMenuModel: buildTopMenu(startPage, path?.abstractItem),
     };
     const markup = renderToString(
       <ServerPageStructureContextProvider context={pageCtx}>
