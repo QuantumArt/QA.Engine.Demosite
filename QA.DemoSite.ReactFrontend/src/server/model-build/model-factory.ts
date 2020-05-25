@@ -49,6 +49,7 @@ export class ModelFactory {
       cultureId: widget.cultureId,
       regionIds: widget.regionIds,
       sortOrder: widget.sortOrder,
+      isPage: false,
       children: widget.childItems
         ?.filter(x => this.isMatchingWidget(x))
         .map(x => this.mapWidget(x as BaseAbstractWidgetItem) as BaseWidgetModel),
@@ -64,6 +65,7 @@ export class ModelFactory {
       cultureId: page.cultureId,
       regionIds: page.regionIds,
       sortOrder: page.sortOrder,
+      isPage: true,
       widgets: getPageWidgets(page, this._widgetFilter)?.map(x => this.mapWidget(x) as BaseWidgetModel),
     };
   }

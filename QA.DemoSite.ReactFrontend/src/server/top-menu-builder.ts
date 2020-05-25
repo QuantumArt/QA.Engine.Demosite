@@ -21,6 +21,7 @@ const buildMenu = (page: BaseAbstractPageItem, level: number, currentPageId: num
   childItems.forEach(item => {
     const menu = buildMenu(item, level - 1, currentPageId);
     items.push({
+      id: item.id,
       title: item.title || '',
       alias: item.alias || '',
       href: item.trail,
@@ -48,6 +49,7 @@ export const buildTopMenu = (
   topLevelItems.forEach(tlItem => {
     const menu = buildMenu(tlItem, MENU_DEPTH, currentPageId);
     items.push({
+      id: tlItem.id,
       title: tlItem.title || '',
       alias: tlItem.alias || '',
       href: tlItem.trail,

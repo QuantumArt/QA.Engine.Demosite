@@ -6,4 +6,5 @@ export interface BaseItemModel {
   readonly sortOrder: number;
   readonly regionIds?: number[];
   readonly cultureId?: number;
+  readonly isPage: boolean;
 }

@@ -97,4 +97,5 @@ export const mapBaseItemToModel = (item: BaseAbstractItem): BaseItemModel => ({
   regionIds: item.regionIds,
   sortOrder: item.sortOrder,
   title: item.title || '',
+  isPage: item.isPage,
 });

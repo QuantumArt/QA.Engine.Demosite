@@ -1,15 +1,18 @@
 import React from 'react';
 import { sortBy } from 'lodash';
 import { Widget } from '../widget';
-import { BasePageModel } from 'page-structure';
+import { BaseItemModel, BasePageModel, BaseWidgetModel } from 'page-structure';
 
 interface Props {
-  abstractItem: BasePageModel;
+  abstractItem: BaseItemModel;
   zoneName: string;
 }
 
 export const WidgetZone: React.FunctionComponent<Props> = ({ abstractItem, zoneName }: Props) => {
-  const childWidgets = abstractItem.widgets?.filter(x => x.zoneName.toLowerCase() === zoneName.toLowerCase());
+  const children = abstractItem.isPage
+    ? (abstractItem as BasePageModel).widgets
+    : (abstractItem as BaseWidgetModel).children;
+  const childWidgets = children?.filter(x => x.zoneName.toLowerCase() === zoneName.toLowerCase());
 
   if (childWidgets?.length) {
     const sortedWidgets = sortBy(childWidgets, x => x.sortOrder);

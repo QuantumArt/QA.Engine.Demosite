@@ -2,6 +2,7 @@ import { BaseWidgetModel } from 'page-structure';
 
 
 export interface TopMenuWidgetItemViewModel {
+  id: number;
   title: string;
   alias: string;
   href: string;
