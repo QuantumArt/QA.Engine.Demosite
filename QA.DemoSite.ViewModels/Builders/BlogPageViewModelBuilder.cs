@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using QA.DemoSite.Interfaces;
 using QA.DotNetCore.Engine.Abstractions;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace QA.DemoSite.ViewModels.Builders
 
         public BlogPageViewModel BuildList(IAbstractPage blogPage)
         {
-            var vm = new BlogPageViewModel { Header = blogPage.Title };
+            var vm = new BlogPageViewModel {Header = blogPage.Title};
             vm.Items.AddRange(BlogService.GetAllPosts().Select(p => new BlogItemInListViewModel
             {
                 Id = p.Id,
@@ -31,7 +32,24 @@ namespace QA.DemoSite.ViewModels.Builders
             return vm;
         }
 
-        public BlogDetailsViewModel BuildDetails(IAbstractPage blogPage, int id)
+        public IEnumerable<BlogItemInListViewModel> GetBlogItems()
+        {
+            return BlogService.GetAllPosts().Select(p => new BlogItemInListViewModel
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Brief = p.Brief,
+                Date = p.PostDate.ToString("dd.MM.yyyy"),
+                CategoryName = p.Category?.Title,
+                Image = p.Image,
+                YoutubeVideoCode = p.YoutubeVideoCode,
+                Published = p.Published
+            });
+        }
+
+
+
+        public BlogDetailsViewModel BuildDetails(int id)
         {
             var dto = BlogService.GetPost(id);
 

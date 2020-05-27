@@ -5,12 +5,13 @@ import { Layout } from '../../layout';
 import { WidgetZone } from '../../widget-zone';
 import { TextPageModel } from 'common/models/pages';
 import { HtmlWithZones } from '../../html-with-zones';
+import { PageTitle } from '../../page-title';
 
 export const TextPage: React.FunctionComponent<PageProps<TextPageModel>> = ({ page }: PageProps<TextPageModel>) => (
   <Layout page={page}>
-    <div>This is text page</div>
-    <div>{page.title}</div>
+    {!page.hideTitle && <PageTitle title={page.title} />}
     <WidgetZone abstractItem={page} zoneName={'Content'} />
-    <HtmlWithZones html={'<div>[[zone=customZone1]]<div>[[zone=customZone2]]</div></div>'} abstractItem={page} />
+    <HtmlWithZones html={page.text} abstractItem={page} />
+    <WidgetZone abstractItem={page} zoneName={'ContentBelow'} />
   </Layout>
 );

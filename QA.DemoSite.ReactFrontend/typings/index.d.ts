@@ -1,16 +1,17 @@
+// for style loader
+declare module '*.css' {
+  const styles: any;
+  export = styles;
+}
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare module '*.scss' {
+  const content: { [className: string]: string };
+  export = content;
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare module '*.svg' {
   const content: any;
-  export default content;
-}
-declare module 'react-bootstrap-navbar-offcanvas' {
-  import React from 'react';
-
-  export interface NavbarOffcanvasInterface {
-    side: 'left' | 'right';
-    // children?: any;
-  }
-  const NavbarOffcanvas: React.ComponentClass<NavbarOffcanvasInterface>;
-  export default NavbarOffcanvas;
-  // export default NavbarOffcanvas: React.ComponentClass<NavbarOffcanvasInterface>
+  export = content;
 }

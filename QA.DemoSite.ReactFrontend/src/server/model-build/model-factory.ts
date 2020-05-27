@@ -39,7 +39,12 @@ export class ModelFactory {
     return item instanceof BaseAbstractWidgetItem && (!this._widgetFilter || this._widgetFilter.match(item));
   }
 
-  private mapBaseWidget(widget: BaseAbstractWidgetItem): BaseWidgetModel {
+  private async mapBaseWidget(widget: BaseAbstractWidgetItem): Promise<BaseWidgetModel> {
+    console.log('mapping baseWidget', widget.type);
+    const childrenPromises = widget.childItems
+      ?.filter(x => this.isMatchingWidget(x))
+      .map(x => this.mapWidget(x as BaseAbstractWidgetItem));
+    const children = childrenPromises ? await Promise.all(childrenPromises) : [];
     return {
       id: widget.id,
       title: widget.title || '',
@@ -50,13 +55,13 @@ export class ModelFactory {
       regionIds: widget.regionIds,
       sortOrder: widget.sortOrder,
       isPage: false,
-      children: widget.childItems
-        ?.filter(x => this.isMatchingWidget(x))
-        .map(x => this.mapWidget(x as BaseAbstractWidgetItem) as BaseWidgetModel),
+      children,
     };
   }
 
-  private mapBasePage(page: BaseAbstractPageItem): BasePageModel {
+  private async mapBasePage(page: BaseAbstractPageItem): Promise<BasePageModel> {
+    const widgetPromises = getPageWidgets(page, this._widgetFilter)?.map(x => this.mapWidget(x));
+    const widgets = widgetPromises ? await Promise.all(widgetPromises) : [];
     return {
       id: page.id,
       title: page.title || '',
@@ -66,12 +71,12 @@ export class ModelFactory {
       regionIds: page.regionIds,
       sortOrder: page.sortOrder,
       isPage: true,
-      widgets: getPageWidgets(page, this._widgetFilter)?.map(x => this.mapWidget(x) as BaseWidgetModel),
+      widgets,
     };
   }
 
-  private mapWidget(widget: BaseAbstractWidgetItem): BaseWidgetModel {
-    console.log('mapping widget');
+  private async mapWidget(widget: BaseAbstractWidgetItem): Promise<BaseWidgetModel> {
+    console.log('mapping widget', widget.type);
     const type = widget.type as WidgetType;
     switch (type) {
       case WidgetType.BannerItemWidget: {
@@ -79,7 +84,7 @@ export class ModelFactory {
         const item = widget as BannerItemWidgetItem;
         // noinspection UnnecessaryLocalVariableJS
         const result: BannerItemWidgetModel = {
-          ...this.mapBaseWidget(item),
+          ...(await this.mapBaseWidget(item)),
           header: item.header,
           description: item.description,
           backgroundImage: item.backgroundImage,
@@ -94,7 +99,7 @@ export class ModelFactory {
         console.log('mapping banner widget');
         // noinspection UnnecessaryLocalVariableJS
         const result: BannerWidgetModel = {
-          ...this.mapBaseWidget(widget as BaseAbstractWidgetItem),
+          ...(await this.mapBaseWidget(widget as BaseAbstractWidgetItem)),
         };
         return result;
       }
@@ -104,16 +109,16 @@ export class ModelFactory {
 
         // noinspection UnnecessaryLocalVariableJS
         const result: FaqWidgetModel = {
-          ...this.mapBaseWidget(item),
+          ...(await this.mapBaseWidget(item)),
           header: item.header,
-          questions: apiService.getFaqQuestions(item.questions),
+          questions: await apiService.getFaqQuestions(item.questions),
         };
         return result;
       }
       case WidgetType.HtmlWidget: {
         const item = widget as HtmlWidgetItem;
         const result: HtmlWidgetModel = {
-          ...this.mapBaseWidget(item),
+          ...(await this.mapBaseWidget(item)),
           html: item.html,
         };
         return result;
@@ -121,7 +126,7 @@ export class ModelFactory {
 
       case WidgetType.TopMenuWidget: {
         const result: TopMenuWidgetModel = {
-          ...this.mapBaseWidget(widget as TopMenuWidgetItem),
+          ...(await this.mapBaseWidget(widget as TopMenuWidgetItem)),
         };
         return result;
       }
@@ -131,7 +136,7 @@ export class ModelFactory {
     }
   }
 
-  buildPageModel(pathData?: PathData): PageModelResult {
+  async buildPageModel(pathData?: PathData): Promise<PageModelResult> {
     if (!pathData) {
       return { notFound: true };
     }
@@ -162,7 +167,7 @@ export class ModelFactory {
         }
         const textPage = page as TextPageItem;
         const result: TextPageModel = {
-          ...this.mapBasePage(textPage),
+          ...(await this.mapBasePage(textPage)),
           text: textPage.text,
           hideTitle: textPage.hideTitle,
         };
@@ -172,11 +177,16 @@ export class ModelFactory {
         const strippedRemainingPath = trimStart(pathData.remainingPath, '/') || '';
         if (!strippedRemainingPath) {
           // страница списка записей в блоге
-          const baseModel = this.mapBasePage(page);
+          const baseModel = await this.mapBasePage(page);
+          const blogItems = await apiService.getBlogItems();
+          if (blogItems) {
+            blogItems.forEach(x => (x.url = `${page.trail}/details/${x.id}`));
+          }
+
           const result: BlogPageModel = {
             ...baseModel,
             blogPageType: BlogPageType.Index,
-            viewModel: apiService.getBlogItems(),
+            viewModel: { header: baseModel.title, items: blogItems },
           };
           return { pageModel: result };
         }
@@ -186,8 +196,8 @@ export class ModelFactory {
           splittedPath[0].toLowerCase() === 'details' &&
           isFinite(Number(splittedPath[1]))
         ) {
-          const baseModel = this.mapBasePage(page);
-          const details = apiService.getBlogItemDetails(Number(splittedPath[1]));
+          const baseModel = await this.mapBasePage(page);
+          const details = await apiService.getBlogItemDetails(Number(splittedPath[1]));
           if (!details) {
             return { notFound: true };
           }

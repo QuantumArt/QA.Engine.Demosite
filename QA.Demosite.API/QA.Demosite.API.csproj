@@ -15,5 +15,11 @@
       <Folder Include="Converters" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\QA.DemoSite.Postgre.DAL\QA.DemoSite.Postgre.DAL.csproj" />
+      <ProjectReference Include="..\QA.DemoSite.Services\QA.DemoSite.Services.csproj" />
+      <ProjectReference Include="..\QA.DemoSite.ViewModels\QA.DemoSite.ViewModels.csproj" />
+    </ItemGroup>
+
 
 </Project>

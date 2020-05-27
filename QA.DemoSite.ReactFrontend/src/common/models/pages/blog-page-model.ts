@@ -13,7 +13,7 @@ export interface BlogItemInListViewModel {
   date: string;
   image: string;
   youtubeVideoCode: string;
-  url: string;
+  url?: string;
   published: boolean;
 }
 export interface BlogPageIndexViewModel {

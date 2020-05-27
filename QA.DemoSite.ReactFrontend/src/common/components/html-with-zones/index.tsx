@@ -19,8 +19,11 @@ export class HtmlWithZones extends React.Component<Props> {
     return undefined;
   };
 
-  render(): JSX.Element {
+  render(): JSX.Element | null {
     const { html } = this.props;
+    if (!html) {
+      return null;
+    }
     const preparedHtml = html.replace(this.zonePattern, '<wz>$1</wz>');
 
     return <React.Fragment>{ReactHtmlParser(preparedHtml, { transform: this.transform })}</React.Fragment>;

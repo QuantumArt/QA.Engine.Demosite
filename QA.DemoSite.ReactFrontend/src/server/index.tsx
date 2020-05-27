@@ -51,7 +51,7 @@ const server = express()
     const widgetFilter = new WidgetFilter(req.path);
 
     const modelFactory = new ModelFactory(widgetFilter);
-    const pageModel = modelFactory.buildPageModel(path);
+    const pageModel = await modelFactory.buildPageModel(path);
     if (pageModel.redirectTo) {
       res.redirect(pageModel.permanentRedirect ? MOVED_PERMANENTLY : MOVED_TEMPORARILY, pageModel.redirectTo);
       return;
@@ -82,22 +82,6 @@ const server = express()
         <title>Razzle TypeScript</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- ==== Bootstrap ==== -->
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- ==== Main Stylesheet ==== -->
-        <link href="/css/style.css" rel="stylesheet">
-
-        <!-- ==== Responsive Stylesheet ==== -->
-        <link href="/css/responsive-style.css" rel="stylesheet">
-
-        <!-- ==== Theme Color Stylesheet ==== -->
-        <link href="/css/colors/theme-color-1.css" rel="stylesheet" id="changeColorScheme">
-
-        <!-- ==== Custom Stylesheet ==== -->
-        <link href="/css/custom.css" rel="stylesheet">
-
-
         ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
 
           ${
@@ -105,6 +89,7 @@ const server = express()
               ? `<script src="${assets.client.js}" defer></script>`
               : `<script src="${assets.client.js}" defer crossorigin></script>`
           }
+          <script src="holder.js"></script>
           ${getPageStructureContextScript(pageCtx)}
     </head>
     <body>

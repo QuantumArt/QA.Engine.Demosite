@@ -26,6 +26,6 @@ export class BannerItemWidgetItem extends BaseAbstractWidgetItem {
   }
 
   get showButton(): boolean {
-    return !!this.detailsButtonText && !this.detailsButtonUrl;
+    return !!this.detailsButtonText && !!this.detailsButtonUrl;
   }
 }

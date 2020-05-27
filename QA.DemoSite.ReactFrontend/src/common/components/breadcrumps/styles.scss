@@ -1,0 +1,25 @@
+.breadcrumps {
+  background-color: inherit;
+  color: #ffffff;
+}
+
+.bc-item a {
+  color: #ffffff;
+
+}
+.bc-item.active {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.bc-item::before {
+  color: #ffffff;
+  //content: '>';
+
+}
+
+.bc-item.active::before {
+  color: #ffffff;
+  content: '>';
+}
+

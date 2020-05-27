@@ -17,8 +17,8 @@ export const getBreadcrumpsModel = (page?: BaseAbstractPageItem, additional?: st
       currentPage = currentPage.parent;
     }
   }
-  if (breadcrumps) {
-    breadcrumps[0].url = undefined;
-  }
+  // if (breadcrumps) {
+  //   breadcrumps[0].url = undefined;
+  // }
   return { breadcrumps: breadcrumps.reverse() };
 };

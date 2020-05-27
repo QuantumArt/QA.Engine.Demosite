@@ -4,7 +4,12 @@ import fetch from 'isomorphic-unfetch';
 import { UniversalAbstractItem } from 'page-structure';
 import qs from 'qs';
 
-import { BlogPageDetailsViewModel, BlogPageIndexViewModel, FaqWidgetItemViewModel } from 'common/models';
+import {
+  BlogItemInListViewModel,
+  BlogPageDetailsViewModel,
+  BlogPageIndexViewModel,
+  FaqWidgetItemViewModel,
+} from 'common/models';
 
 class ApiService {
   readonly headers = {
@@ -42,27 +47,32 @@ class ApiService {
     return await this.getSiteStructureModel(res);
   }
 
-  getFaqQuestions(questions: number[]): FaqWidgetItemViewModel[] | undefined {
-    return [];
+  public async getFaqQuestions(questions: number[]): Promise<FaqWidgetItemViewModel[] | undefined> {
+    const params = qs.stringify({ questionIds: questions });
+    const url = `http://localhost:5000/api/faq/questions?${params}`;
+    const res = await this.apiRequest(url);
+    if (res.ok) {
+      return (await res.json()) as FaqWidgetItemViewModel[];
+    }
+    return undefined;
   }
 
-  getBlogItems(): BlogPageIndexViewModel {
-    return {
-      header: '',
-      items: [],
-    };
+  async getBlogItems(): Promise<BlogItemInListViewModel[] | undefined> {
+    const url = 'http://localhost:5000/api/blog/items';
+    const res = await this.apiRequest(url);
+    if (res.ok) {
+      return (await res.json()) as BlogItemInListViewModel[];
+    }
+    return undefined;
   }
 
-  getBlogItemDetails(id: number): BlogPageDetailsViewModel {
-    return {
-      categoryName: 'blabla',
-      date: 'kjdfhgk',
-      image: 'jlsdfkg',
-      tags: [],
-      text: 'skjdfbnk',
-      title: 'skldfn',
-      youtubeVideoCode: 'sjkdnfk',
-    };
+  async getBlogItemDetails(id: number): Promise<BlogPageDetailsViewModel | undefined> {
+    const url = `http://localhost:5000/api/blog/item/${id.toString()}`;
+    const res = await this.apiRequest(url);
+    if (res.ok) {
+      return (await res.json()) as BlogPageDetailsViewModel;
+    }
+    return undefined;
   }
 }
 
