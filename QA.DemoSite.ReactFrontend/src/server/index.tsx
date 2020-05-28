@@ -20,6 +20,7 @@ import { BaseAbstractPageItem } from '../page-structure/models/abstract';
 import { findPath, getStartPage } from '../page-structure/pathfinder';
 import { ModelFactory } from './model-build/model-factory';
 import { buildTopMenu } from './top-menu-builder';
+import { runtimeConfig } from 'common/config';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;
@@ -94,6 +95,7 @@ const server = express()
     </head>
     <body>
         <div id="root">${markup}</div>
+        <script>window['env'] = ${JSON.stringify(runtimeConfig)};</script>
     </body>
 </html>`,
     );
