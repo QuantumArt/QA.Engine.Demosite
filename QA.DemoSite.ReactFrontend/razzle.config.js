@@ -1,14 +1,7 @@
 'use strict';
 
 module.exports = {
-  modify: (config, {target, dev}, webpack) => {
-    config.plugins.push(new webpack.ProvidePlugin({
-      'Holder': 'holderjs',
-      'holder': 'holderjs',
-      'window.Holder': 'holderjs'
-    }));
-    return config;
-  },
+
 
   plugins: [
     {
@@ -57,8 +50,7 @@ module.exports = {
           prod: {
             sourceMap: false,
             importLoaders: 1,
-            modules: false,
-            minimize: true,
+            modules: false
           },
         },
       },

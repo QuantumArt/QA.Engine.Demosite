@@ -1,0 +1,28 @@
+version: '3.4'
+services:
+  demositeapi:
+    build:
+      context: . # выполняем в контексте папки исходников
+      dockerfile: ./QA.Demosite.API/Dockerfile
+      network: host
+      args:
+        PROJECT_NAME: QA.Demosite.API
+    container_name: wpdemo.api
+    # dns: 127.0.0.53
+    ports:
+      - 5000:80
+    environment:
+      QpSettings__ConnectionString: Server=172.16.4.17;Database=qa_demosite_react;User Id=postgres;Password=1q2w-p=[
+      QpSettings__CustomerCode: demo_site_pg_react
+
+  razzleapp:
+    build:
+      context: ./QA.DemoSite.ReactFrontend
+      dockerfile: Dockerfile
+      network: host
+    container_name: wpdemo.front
+    ports:
+      - 3000:3000
+    environment:
+      API_BASE_URL: http://demositeapi/api
+    
