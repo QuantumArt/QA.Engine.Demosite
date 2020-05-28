@@ -1,0 +1,6 @@
+.dockerignore
+.env
+.git
+docker-compose.yml
+Kubernetes/
+node_modules/

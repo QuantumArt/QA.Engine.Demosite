@@ -12,7 +12,8 @@ services:
     ports:
       - 5000:80
     environment:
-      QpSettings__ConnectionString: Server=172.16.4.17;Database=qa_demosite_react;User Id=postgres;Password=1q2w-p=[
+      QpSettings__ConfigurationServiceUrl: http://qp-conf-service.dev.qsupport.ru
+      QpSettings__ConfigurationServiceToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJRUC5Db25maWd1cmF0aW9uU2VydmljZS5Jc3N1ZXIiLCJleHAiOjE2MDg1ODM4NjIsImF1ZCI6IlFQLkNvbmZpZ3VyYXRpb25TZXJ2aWNlLkF1ZGllbmNlIn0.CB5JOeeEHibhN1_WB7cTT4pv27MZUYn_xmV2QW4F9p0
       QpSettings__CustomerCode: demo_site_pg_react
 
   razzleapp:

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -12,14 +13,20 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using QA.DemoSite.Interfaces;
+using QA.DemoSite.Mssql.DAL;
 using QA.DemoSite.Postgre.DAL;
 using QA.DemoSite.Services;
 using QA.DemoSite.Templates;
 using QA.DemoSite.ViewModels.Builders;
 using QA.DotNetCore.Engine.CacheTags;
 using QA.DotNetCore.Engine.CacheTags.Configuration;
+using QA.DotNetCore.Engine.Persistent.Interfaces;
 using QA.DotNetCore.Engine.Persistent.Interfaces.Settings;
 using QA.DotNetCore.Engine.QpData.Configuration;
+using QA.DotNetCore.Engine.QpData.Persistent.Dapper;
+using QP.ConfigurationService.Models;
+using Quantumart.QPublishing.Database;
+using DatabaseType = QA.DotNetCore.Engine.Persistent.Interfaces.DatabaseType;
 
 namespace QA.Demosite.API
 {
@@ -39,13 +46,44 @@ namespace QA.Demosite.API
             services.AddMemoryCache();
 
             var qpSettings = Configuration.GetSection("QpSettings").Get<QpSettings>();
-            services.AddSiteStructure(options => { options.UseQpSettings(qpSettings); });
+
+
             services.AddSingleton(qpSettings);
 
-            services.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(qpSettings.ConnectionString));
-            services.AddScoped<IDbContext>(sp => PostgreQpDataContext.CreateWithStaticMapping(
-                qpSettings.IsStage ? ContentAccess.Stage : ContentAccess.Live,
-                sp.GetService<NpgsqlConnection>()));
+            // services.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(qpSettings.ConnectionString));
+            // services.AddScoped<IDbContext>(sp => PostgreQpDataContext.CreateWithStaticMapping(
+            //     qpSettings.IsStage ? ContentAccess.Stage : ContentAccess.Live,
+            //     sp.GetService<NpgsqlConnection>()));
+
+            DBConnector.ConfigServiceUrl = qpSettings.ConfigurationServiceUrl;
+            DBConnector.ConfigServiceToken = qpSettings.ConfigurationServiceToken;
+            var dbConfig = DBConnector.GetCustomerConfiguration(qpSettings.CustomerCode).Result;
+
+            services.AddSiteStructure(options =>
+            {
+                options.QpConnectionString = dbConfig.ConnectionString;
+                options.QpDatabaseType = dbConfig.DbType.ToString();
+                options.IsStage = qpSettings.IsStage;
+                options.SiteId = qpSettings.SiteId;
+            });
+
+            //ef контекст
+            if (dbConfig.DbType == QP.ConfigurationService.Models.DatabaseType.Postgres)
+            {
+                services.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(dbConfig.ConnectionString));
+                services.AddScoped<IDbContext>(sp => PostgreQpDataContext.CreateWithStaticMapping(
+                    qpSettings.IsStage
+                        ? DemoSite.Postgre.DAL.ContentAccess.Stage
+                        : DemoSite.Postgre.DAL.ContentAccess.Live,
+                    sp.GetService<NpgsqlConnection>()));
+            }
+            else
+            {
+                services.AddScoped<SqlConnection>(_ => new SqlConnection(dbConfig.ConnectionString));
+                services.AddScoped<IDbContext>(sp => QpDataContext.CreateWithStaticMapping(
+                    qpSettings.IsStage ? DemoSite.Mssql.DAL.ContentAccess.Stage : DemoSite.Mssql.DAL.ContentAccess.Live,
+                    sp.GetService<SqlConnection>()));
+            }
 
             //сервисы слоя данных
             services.AddScoped<IFaqService, FaqService>();

@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wp-reactdemo-api-stage-pg
+  namespace: widget-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wp-reactdemo-api-stage-pg
+  template:
+    metadata:
+      labels:
+        app: wp-reactdemo-api-stage-pg
+    spec:
+      containers:
+      - image: spbdocker03:5000/widget-platform/react-demosite-api:||version||
+        name: wp-reactdemo-api-stage-pg
+        ports:
+        - containerPort: 80
+        env:
+        - name: QpSettings__CustomerCode
+          value: demo_site_pg_react
+        - name: QpSettings__ConfigurationServiceUrl
+          valueFrom:
+            configMapKeyRef:
+              name: qp-config
+              key: CONFIGURATION_SERVICE_HOST
+        - name: QpSettings__ConfigurationServiceToken
+          valueFrom:
+            configMapKeyRef:
+              name: qp-config
+              key: CONFIGURATION_SERVICE_TOKEN
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: tz-config
+        resources:
+          limits:
+            memory: "256Mi"
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: /usr/share/zoneinfo/Europe/Moscow
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-reactdemo-api-stage-pg
+  namespace: widget-platform
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: wp-reactdemo-api-stage-pg
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+  name: wp-reactdemo-api-stage-pg
+  namespace: widget-platform
+spec:
+  rules:
+  - host: api.react-demo.widget-platform.dev.qsupport.ru
+    http:
+      paths:
+      - backend:
+          serviceName: wp-reactdemo-api-stage-pg
+          servicePort: 80
