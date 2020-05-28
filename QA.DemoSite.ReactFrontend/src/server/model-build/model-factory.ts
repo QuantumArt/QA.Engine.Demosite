@@ -40,7 +40,6 @@ export class ModelFactory {
   }
 
   private async mapBaseWidget(widget: BaseAbstractWidgetItem): Promise<BaseWidgetModel> {
-    console.log('mapping baseWidget', widget.type);
     const childrenPromises = widget.childItems
       ?.filter(x => this.isMatchingWidget(x))
       .map(x => this.mapWidget(x as BaseAbstractWidgetItem));
@@ -76,11 +75,9 @@ export class ModelFactory {
   }
 
   private async mapWidget(widget: BaseAbstractWidgetItem): Promise<BaseWidgetModel> {
-    console.log('mapping widget', widget.type);
     const type = widget.type as WidgetType;
     switch (type) {
       case WidgetType.BannerItemWidget: {
-        console.log('mapping banner item widget');
         const item = widget as BannerItemWidgetItem;
         // noinspection UnnecessaryLocalVariableJS
         const result: BannerItemWidgetModel = {
@@ -96,7 +93,6 @@ export class ModelFactory {
         return result;
       }
       case WidgetType.BannerWidget: {
-        console.log('mapping banner widget');
         // noinspection UnnecessaryLocalVariableJS
         const result: BannerWidgetModel = {
           ...(await this.mapBaseWidget(widget as BaseAbstractWidgetItem)),

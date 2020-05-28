@@ -15,7 +15,6 @@ const App = (): JSX.Element => (
     <PageStructureContext.Consumer>
       {(context?: PageStructureContextInterface) => {
         const ctx = context as PageContext;
-        console.log('consumed context', ctx);
         // console.log(ctx.testContextExtensionField);
         if (ctx?.pageModel) {
           const mappedPage = ctx.pageModel as BasePageModel;
