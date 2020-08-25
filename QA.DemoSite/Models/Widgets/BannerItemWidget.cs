@@ -10,9 +10,7 @@ namespace QA.DemoSite.Models.Widgets
         public string DetailsButtonText => GetDetail("DetailsButtonText", string.Empty);
         public string DetailsButtonUrl => GetDetail("DetailsButtonUrl", string.Empty);
 
-        [LibraryUrl]
         public string BackgroundImage => GetDetail("BackgroundImage", string.Empty);
-        [LibraryUrl]
         public string Image => GetDetail("Image", string.Empty);
 
         public bool ShowButton => !string.IsNullOrWhiteSpace(DetailsButtonText) && !string.IsNullOrWhiteSpace(DetailsButtonUrl);

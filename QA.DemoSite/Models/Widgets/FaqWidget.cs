@@ -9,7 +9,6 @@ namespace QA.DemoSite.Models.Widgets
     {
         public string Header => GetDetail("Header", string.Empty);
 
-        [LoadManyToManyRelations]
         public IEnumerable<int> Questions => GetRelationIds("Questions");
     }
 }
